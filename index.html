@@ -37,7 +37,6 @@
             border-radius: 10px;
         }
 
-        /* AI Chat Bubble Animation */
         @keyframes pulse-ai {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
             70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
@@ -188,41 +187,6 @@
         </div>
     </main>
 
-    <div id="ai-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl transform transition-all scale-95 opacity-0 duration-300 flex flex-col h-[80vh]" id="ai-content">
-            <div class="p-6 bg-gradient-to-r from-blue-600 to-indigo-700 flex justify-between items-center text-white shrink-0">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-bold">Asisten Belajar ✨</h2>
-                        <p class="text-xs text-blue-100">AI Marsiajar Siap Membantu</p>
-                    </div>
-                </div>
-                <button onclick="tutupAI()" class="text-2xl hover:text-blue-200">&times;</button>
-            </div>
-            
-            <div id="ai-chat-box" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar bg-slate-50">
-                <div class="flex gap-3">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-robot"></i></div>
-                    <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%]">
-                        Halo pejuang ujian! Saya AI Marsiajar. Kamu bisa tanya apa saja seputar strategi belajar atau detail modul kami. Ada yang bisa saya bantu? ✨
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 bg-white border-t border-slate-100 shrink-0">
-                <div class="flex gap-2">
-                    <input type="text" id="ai-input" placeholder="Tanyakan sesuatu..." class="flex-1 bg-slate-50 border-2 border-slate-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-all">
-                    <button onclick="kirimPesanAI()" id="ai-send-btn" class="bg-blue-600 text-white p-3 px-5 rounded-xl hover:bg-blue-700 transition active:scale-95">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl transform transition-all scale-95 opacity-0 duration-300" id="auth-content">
             <div class="p-8">
@@ -284,6 +248,41 @@
                             Sudah punya akun? <button onclick="toggleAuthMode('login')" class="text-blue-600 font-bold">Masuk di sini</button>
                         </p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ai-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl transform transition-all scale-95 opacity-0 duration-300 flex flex-col h-[80vh]" id="ai-content">
+            <div class="p-6 bg-gradient-to-r from-blue-600 to-indigo-700 flex justify-between items-center text-white shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold">Asisten Belajar ✨</h2>
+                        <p class="text-xs text-blue-100">AI Marsiajar Siap Membantu</p>
+                    </div>
+                </div>
+                <button onclick="tutupAI()" class="text-2xl hover:text-blue-200">&times;</button>
+            </div>
+            
+            <div id="ai-chat-box" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar bg-slate-50">
+                <div class="flex gap-3">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-robot"></i></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%]">
+                        Halo pejuang ujian! Saya AI Marsiajar. Kamu bisa tanya apa saja seputar strategi belajar atau detail modul kami. Ada yang bisa saya bantu? ✨
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-white border-t border-slate-100 shrink-0">
+                <div class="flex gap-2">
+                    <input type="text" id="ai-input" placeholder="Tanyakan sesuatu..." class="flex-1 bg-slate-50 border-2 border-slate-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-all">
+                    <button onclick="kirimPesanAI()" id="ai-send-btn" class="bg-blue-600 text-white p-3 px-5 rounded-xl hover:bg-blue-700 transition active:scale-95">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -444,23 +443,23 @@
 
     <script>
         // ==========================================
-        // 1. KONFIGURASI SUPABASE (DATABASE)
+        // 1. SUPABASE CONFIGURATION
         // ==========================================
         const supabaseUrl = 'https://qyibrftzgezfatvbcqem.supabase.co';
         const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-        let kumpulanSoal = []; 
+        let kumpulanSoal = [];
 
         // ==========================================
-        // 2. KONFIGURASI GEMINI API (AI)
+        // 2. GEMINI AI CONFIGURATION
         // ==========================================
-        const apiKey = ""; // Jika Anda ingin fitur AI berjalan, Anda perlu API Key Gemini di sini
+        const apiKey = ""; // API Key Gemini (Optional)
         const geminiModel = "gemini-2.5-flash-preview-09-2025";
         const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
 
         // ==========================================
-        // 3. VARIABEL & STATE APLIKASI
+        // 3. GLOBAL VARIABLES
         // ==========================================
         let currentFilter = 'semua';
         let selectedProduct = null;
@@ -468,28 +467,30 @@
         const emptyState = document.getElementById('empty-state');
 
         // ==========================================
-        // 4. FUNGSI MENGAMBIL DATA DARI DATABASE
+        // 4. FETCH DATA FROM SUPABASE
         // ==========================================
         async function fetchProducts() {
-            wadah.innerHTML = '<p class="text-slate-500 w-full text-center py-10">Memuat data modul dari database...</p>';
-
-            const { data, error } = await supabase.from('products').select('*');
-            
-            if (error) {
-                console.error("Gagal mengambil data:", error);
-                wadah.innerHTML = '<p class="text-red-500 font-bold w-full text-center py-10">Gagal terhubung ke database. Pastikan tabel telah dibuat di Supabase.</p>';
-                showToast("❌ Gagal memuat data dari database.");
-            } else {
-                kumpulanSoal = data;
-                tampilkanSoal(kumpulanSoal);
+            try {
+                wadah.innerHTML = '<p class="text-slate-500 w-full text-center py-10">Memuat data modul dari database...</p>';
+                const { data, error } = await supabase.from('products').select('*');
+                
+                if (error) {
+                    console.error("Gagal mengambil data:", error);
+                    wadah.innerHTML = '<p class="text-red-500 font-bold w-full text-center py-10">Gagal terhubung ke database. Pastikan tabel "products" telah dibuat di Supabase.</p>';
+                } else {
+                    kumpulanSoal = data || [];
+                    tampilkanSoal(kumpulanSoal);
+                }
+            } catch (err) {
+                wadah.innerHTML = '<p class="text-red-500 font-bold w-full text-center py-10">Terjadi kesalahan pada sistem.</p>';
             }
         }
 
         // ==========================================
-        // 5. FUNGSI TAMPILAN & LOGIKA 
+        // 5. UI & LOGIC FUNCTIONS
         // ==========================================
         function tampilkanSoal(data = kumpulanSoal) {
-            if (data.length === 0) {
+            if (!data || data.length === 0) {
                 wadah.innerHTML = '';
                 emptyState.classList.remove('hidden');
                 return;
@@ -507,13 +508,12 @@
                             </button>
                         </div>
                     </div>
-                    
                     <div class="p-4 pt-5">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-slate-800 leading-snug h-10 overflow-hidden text-sm">${soal.title || soal.judul}</h3>
+                            <h3 class="font-bold text-slate-800 leading-snug h-10 overflow-hidden text-sm">${soal.title || soal.judul || 'Tanpa Judul'}</h3>
                         </div>
                         <div class="flex items-center gap-2 mb-4">
-                            <span class="text-[10px] text-slate-400 uppercase font-black tracking-widest">${soal.category || soal.kategori}</span>
+                            <span class="text-[10px] text-slate-400 uppercase font-black tracking-widest">${soal.category || soal.kategori || 'UMUM'}</span>
                             <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
                             <span class="text-[10px] text-emerald-500 font-bold">Tersedia</span>
                         </div>
@@ -531,7 +531,6 @@
             `).join('');
         }
 
-        // Logic Filter Kategori - DIPERBAIKI
         function filterKategori(kat, elemenTombol) {
             currentFilter = kat;
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -555,20 +554,22 @@
         function searchSoal() {
             const keyword = document.getElementById('search-input').value.toLowerCase();
             const hasil = kumpulanSoal.filter(s => 
-                (s.title || s.judul).toLowerCase().includes(keyword) || 
-                (s.category || s.kategori).toLowerCase().includes(keyword)
+                (s.title || s.judul || '').toLowerCase().includes(keyword) || 
+                (s.category || s.kategori || '').toLowerCase().includes(keyword)
             );
             tampilkanSoal(hasil);
-            document.getElementById('kategori').scrollIntoView({ behavior: 'smooth' });
+            const section = document.getElementById('kategori');
+            if(section) section.scrollIntoView({ behavior: 'smooth' });
         }
 
-        document.getElementById('search-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') searchSoal();
-        });
-
+        // ==========================================
+        // 6. MODAL & AUTH FUNCTIONS
+        // ==========================================
         function bukaModal(id) {
             const item = kumpulanSoal.find(s => s.id === id);
+            if(!item) return;
             selectedProduct = item;
+            
             const modal = document.getElementById('payment-modal');
             const content = document.getElementById('modal-content');
             
@@ -578,9 +579,7 @@
             document.getElementById('modal-icon-bg').className = `w-16 h-16 rounded-xl flex items-center justify-center text-3xl shrink-0 ${item.bg || 'bg-slate-100'}`;
             
             modal.classList.remove('hidden');
-            setTimeout(() => {
-                content.classList.remove('scale-95', 'opacity-0');
-            }, 10);
+            setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
             document.body.classList.add('modal-active');
         }
 
@@ -594,132 +593,7 @@
             }, 300);
         }
 
-        // ==========================================
-        // 6. FUNGSI AI
-        // ==========================================
-        async function panggilGemini(prompt, systemPrompt = "Kamu adalah asisten belajar pintar di platform Marsiajar. Jawablah dengan ramah.") {
-            if(!apiKey) throw new Error("API Key Gemini belum diisi!");
-            
-            let retries = 0;
-            const maxRetries = 5;
-
-            while (retries <= maxRetries) {
-                try {
-                    const response = await fetch(geminiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: prompt }] }],
-                            systemInstruction: { parts: [{ text: systemPrompt }] }
-                        })
-                    });
-
-                    if (!response.ok) throw new Error('API Error');
-                    const result = await response.json();
-                    return result.candidates?.[0]?.content?.parts?.[0]?.text;
-                } catch (error) {
-                    if (retries === maxRetries) throw error;
-                    const delay = Math.pow(2, retries) * 1000;
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    retries++;
-                }
-            }
-        }
-
-        function bukaAI() {
-            const modal = document.getElementById('ai-modal');
-            const content = document.getElementById('ai-content');
-            modal.classList.remove('hidden');
-            setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
-            document.body.classList.add('modal-active');
-        }
-
-        function tutupAI() {
-            const modal = document.getElementById('ai-modal');
-            const content = document.getElementById('ai-content');
-            content.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.classList.remove('modal-active');
-            }, 300);
-        }
-
-        async function kirimPesanAI() {
-            const input = document.getElementById('ai-input');
-            const box = document.getElementById('ai-chat-box');
-            const msg = input.value.trim();
-            if (!msg) return;
-
-            input.value = '';
-            box.innerHTML += `
-                <div class="flex justify-end gap-3">
-                    <div class="bg-blue-600 text-white p-4 rounded-2xl rounded-tr-none text-sm shadow-md max-w-[85%]">
-                        ${msg}
-                    </div>
-                </div>
-            `;
-            box.scrollTop = box.scrollHeight;
-
-            const loadingId = 'ai-loading-' + Date.now();
-            box.innerHTML += `
-                <div class="flex gap-3 animate-pulse" id="${loadingId}">
-                    <div class="w-8 h-8 bg-slate-300 rounded-lg shrink-0"></div>
-                    <div class="bg-slate-200 w-1/2 h-10 rounded-2xl"></div>
-                </div>
-            `;
-            box.scrollTop = box.scrollHeight;
-
-            try {
-                const aiResponse = await panggilGemini(msg);
-                document.getElementById(loadingId).remove();
-                box.innerHTML += `
-                    <div class="flex gap-3">
-                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-robot"></i></div>
-                        <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%] whitespace-pre-line">
-                            ${aiResponse}
-                        </div>
-                    </div>
-                `;
-            } catch (err) {
-                document.getElementById(loadingId).remove();
-                box.innerHTML += `<p class="text-center text-xs text-red-500 italic">Cek konfigurasi API Key Gemini Anda.</p>`;
-            }
-            box.scrollTop = box.scrollHeight;
-        }
-
-        document.getElementById('ai-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') kirimPesanAI();
-        });
-
-        async function generatePlanAI() {
-            if (!selectedProduct) return;
-            showToast("✨ AI sedang merancang strategi belajarmu...");
-            
-            const judulProduk = selectedProduct.title || selectedProduct.judul;
-            const prompt = `Berikan rencana belajar ringkas (roadmap) untuk paket: "${judulProduk}". Jelaskan langkah 1-3 untuk persiapan yang efektif.`;
-            const systemPrompt = "Kamu adalah spesialis kurikulum ujian di Marsiajar. Berikan roadmap belajar yang praktis dan memberikan semangat.";
-
-            try {
-                const plan = await panggilGemini(prompt, systemPrompt);
-                bukaAI();
-                const box = document.getElementById('ai-chat-box');
-                box.innerHTML += `
-                    <div class="flex gap-3">
-                        <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-magic"></i></div>
-                        <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%] whitespace-pre-line">
-                            <strong>Strategi Belajar AI untuk ${judulProduk}:</strong>\n\n${plan}
-                        </div>
-                    </div>
-                `;
-                box.scrollTop = box.scrollHeight;
-            } catch (err) {
-                showToast("❌ Gagal membuat rencana belajar. Cek API Key Gemini.");
-            }
-        }
-
-        // ==========================================
-        // 7. FUNGSI UI LAINNYA
-        // ==========================================
+        // FUNGSI INI YANG SEBELUMNYA MATI
         function bukaAuth(mode) {
             const modal = document.getElementById('auth-modal');
             const content = document.getElementById('auth-content');
@@ -727,9 +601,7 @@
             toggleAuthMode(mode);
             
             modal.classList.remove('hidden');
-            setTimeout(() => {
-                content.classList.remove('scale-95', 'opacity-0');
-            }, 10);
+            setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
             document.body.classList.add('modal-active');
         }
 
@@ -775,22 +647,144 @@
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
-            toast.classList.remove('translate-y-32');
-            setTimeout(() => {
-                toast.classList.add('translate-y-32');
-            }, 4000);
+            const toastMsg = document.getElementById('toast-msg');
+            if(toast && toastMsg) {
+                toastMsg.innerText = msg;
+                toast.classList.remove('translate-y-32');
+                setTimeout(() => toast.classList.add('translate-y-32'), 4000);
+            }
         }
 
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('translate-x-full');
+            if(menu) menu.classList.toggle('translate-x-full');
         }
 
-        // INIT: Panggil fetchProducts() saat halaman pertama kali dibuka
-        window.onload = () => {
+        // ==========================================
+        // 7. AI FUNCTIONS
+        // ==========================================
+        async function panggilGemini(prompt, systemPrompt = "Kamu adalah asisten belajar.") {
+            if(!apiKey) throw new Error("API Key Gemini belum diisi!");
+            try {
+                const response = await fetch(geminiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+                if (!response.ok) throw new Error('API Error');
+                const result = await response.json();
+                return result.candidates?.[0]?.content?.parts?.[0]?.text;
+            } catch (error) {
+                throw error;
+            }
+        }
+
+        function bukaAI() {
+            const modal = document.getElementById('ai-modal');
+            const content = document.getElementById('ai-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
+            document.body.classList.add('modal-active');
+        }
+
+        function tutupAI() {
+            const modal = document.getElementById('ai-modal');
+            const content = document.getElementById('ai-content');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.classList.remove('modal-active');
+            }, 300);
+        }
+
+        async function kirimPesanAI() {
+            const input = document.getElementById('ai-input');
+            const box = document.getElementById('ai-chat-box');
+            const msg = input.value.trim();
+            if (!msg) return;
+
+            input.value = '';
+            box.innerHTML += `
+                <div class="flex justify-end gap-3">
+                    <div class="bg-blue-600 text-white p-4 rounded-2xl rounded-tr-none text-sm shadow-md max-w-[85%]">${msg}</div>
+                </div>
+            `;
+            box.scrollTop = box.scrollHeight;
+
+            const loadingId = 'ai-loading-' + Date.now();
+            box.innerHTML += `
+                <div class="flex gap-3 animate-pulse" id="${loadingId}">
+                    <div class="w-8 h-8 bg-slate-300 rounded-lg shrink-0"></div>
+                    <div class="bg-slate-200 w-1/2 h-10 rounded-2xl"></div>
+                </div>
+            `;
+            box.scrollTop = box.scrollHeight;
+
+            try {
+                const aiResponse = await panggilGemini(msg);
+                document.getElementById(loadingId).remove();
+                box.innerHTML += `
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-robot"></i></div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%] whitespace-pre-line">${aiResponse}</div>
+                    </div>
+                `;
+            } catch (err) {
+                document.getElementById(loadingId).remove();
+                box.innerHTML += `<p class="text-center text-xs text-red-500 italic">Fitur AI membutuhkan API Key Gemini.</p>`;
+            }
+            box.scrollTop = box.scrollHeight;
+        }
+
+        async function generatePlanAI() {
+            if (!selectedProduct) return;
+            showToast("✨ AI sedang merancang strategi belajarmu...");
+            
+            const judulProduk = selectedProduct.title || selectedProduct.judul;
+            const prompt = `Berikan rencana belajar ringkas untuk paket: "${judulProduk}". Jelaskan langkah 1-3.`;
+            
+            try {
+                const plan = await panggilGemini(prompt);
+                bukaAI();
+                const box = document.getElementById('ai-chat-box');
+                box.innerHTML += `
+                    <div class="flex gap-3">
+                        <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-magic"></i></div>
+                        <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%] whitespace-pre-line">
+                            <strong>Strategi Belajar AI untuk ${judulProduk}:</strong>\n\n${plan}
+                        </div>
+                    </div>
+                `;
+                box.scrollTop = box.scrollHeight;
+            } catch (err) {
+                showToast("❌ Fitur AI membutuhkan API Key.");
+            }
+        }
+
+        // ==========================================
+        // 8. EVENT LISTENERS & INIT
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search-input');
+            if(searchInput) {
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') searchSoal();
+                });
+            }
+
+            const aiInput = document.getElementById('ai-input');
+            if(aiInput) {
+                aiInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') kirimPesanAI();
+                });
+            }
+            
+            // Panggil data saat halaman selesai dimuat
             fetchProducts();
-        };
+        });
     </script>
 </body>
 </html>
