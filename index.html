@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marsiajar Maretong - Solusi Lulus Ujian Digital</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
@@ -16,7 +19,7 @@
         html { scroll-behavior: smooth; }
         
         .glass-nav {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
@@ -26,17 +29,12 @@
             opacity: 1;
         }
         
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #3b82f6;
-            border-radius: 10px;
-        }
+        /* Custom Scrollbar untuk Chat AI */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
 
+        /* Animasi Tombol Melayang AI */
         @keyframes pulse-ai {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
             70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
@@ -47,31 +45,31 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="bg-gray-50 text-slate-900">
 
-    <nav class="glass-nav border-b border-slate-200 sticky top-0 z-[500]">
+    <nav class="glass-nav border-b border-slate-200 sticky top-0 z-[500] shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center gap-3">
-                    <img src="LOGO.jpg" alt="Logo Marsiajar Maretong" class="h-14 w-auto object-contain hover:scale-105 transition-transform duration-300">
-                    <span class="hidden sm:block text-xl font-extrabold tracking-tight bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent uppercase">
+                    <img src="LOGO.jpg" alt="Logo Marsiajar" class="h-14 w-auto object-contain hover:scale-105 transition-transform">
+                    <span class="hidden sm:block text-xl font-extrabold tracking-tight text-blue-700 uppercase">
                         Marsiajar
                     </span>
                 </div>
                 
-                <div class="hidden md:flex space-x-10">
-                    <a href="#beranda" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Beranda</a>
-                    <a href="#kategori" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">E-Book</a>
-                    <a href="#testimoni" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Testimoni</a>
-                    <button onclick="bukaAI()" class="text-sm font-bold text-blue-600 flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-full hover:bg-blue-100 transition-all">
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#beranda" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition">Beranda</a>
+                    <a href="#kategori" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition">Kategori</a>
+                    <a href="#testimoni" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition">Testimoni</a>
+                    <button onclick="bukaAI()" class="text-sm font-bold text-blue-600 flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-full hover:bg-blue-100 transition">
                         Tanya AI ✨
                     </button>
                 </div>
 
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3">
                     <button onclick="bukaAuth('login')" class="hidden sm:block text-sm font-bold text-blue-600 px-4 py-2 hover:bg-blue-50 rounded-lg transition">Masuk</button>
-                    <button onclick="bukaAuth('register')" class="bg-blue-600 text-white text-sm font-bold px-6 py-2.5 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95">Daftar</button>
-                    <button class="md:hidden text-slate-600 text-xl" onclick="toggleMobileMenu()">
+                    <button onclick="bukaAuth('register')" class="bg-blue-600 text-white text-sm font-bold px-6 py-2.5 rounded-xl hover:bg-blue-700 shadow-md transition active:scale-95">Daftar</button>
+                    <button class="md:hidden text-slate-600 text-2xl ml-2" onclick="toggleMobileMenu()">
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>
@@ -80,110 +78,94 @@
     </nav>
 
     <div id="mobile-menu" class="fixed inset-0 bg-white z-[600] translate-x-full transition-transform duration-300 md:hidden p-6">
-        <div class="flex justify-between items-center mb-10">
-            <div class="flex items-center gap-2">
+        <div class="flex justify-between items-center mb-10 border-b pb-4">
+            <div class="flex items-center gap-3">
                 <img src="LOGO.jpg" alt="Logo" class="h-10 w-auto">
                 <span class="font-bold text-xl text-blue-600 uppercase">Menu</span>
             </div>
-            <button onclick="toggleMobileMenu()" class="text-2xl text-slate-400">&times;</button>
+            <button onclick="toggleMobileMenu()" class="text-3xl text-slate-400 hover:text-red-500">&times;</button>
         </div>
         <div class="flex flex-col gap-6">
-            <a href="#beranda" onclick="toggleMobileMenu()" class="text-2xl font-bold">Beranda</a>
-            <a href="#kategori" onclick="toggleMobileMenu()" class="text-2xl font-bold">Katalog Modul</a>
-            <a href="#testimoni" onclick="toggleMobileMenu()" class="text-2xl font-bold">Testimoni</a>
-            <button onclick="toggleMobileMenu(); bukaAI()" class="text-left text-2xl font-bold text-blue-600">Tanya AI ✨</button>
-            <hr>
-            <button onclick="toggleMobileMenu(); bukaAuth('login')" class="text-left text-xl font-bold text-blue-600">Masuk</button>
-            <button onclick="toggleMobileMenu(); bukaAuth('register')" class="text-left text-xl font-bold text-slate-800">Daftar Akun</button>
+            <a href="#beranda" onclick="toggleMobileMenu()" class="text-xl font-bold text-slate-700">Beranda</a>
+            <a href="#kategori" onclick="toggleMobileMenu()" class="text-xl font-bold text-slate-700">Katalog Modul</a>
+            <a href="#testimoni" onclick="toggleMobileMenu()" class="text-xl font-bold text-slate-700">Testimoni</a>
+            <button onclick="toggleMobileMenu(); bukaAI()" class="text-left text-xl font-bold text-blue-600 bg-blue-50 p-3 rounded-xl w-fit">Tanya AI ✨</button>
+            <hr class="border-slate-200">
+            <button onclick="toggleMobileMenu(); bukaAuth('login')" class="text-left text-xl font-bold text-slate-700 hover:text-blue-600">Masuk Akun</button>
+            <button onclick="toggleMobileMenu(); bukaAuth('register')" class="text-left text-xl font-bold text-white bg-blue-600 p-3 rounded-xl text-center w-full shadow-md">Daftar Baru</button>
         </div>
     </div>
 
-    <header id="beranda" class="relative pt-20 pb-32 px-4 overflow-hidden">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full opacity-10 pointer-events-none">
-            <div class="absolute top-20 left-10 w-64 h-64 bg-blue-400 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-20 right-10 w-64 h-64 bg-indigo-400 rounded-full blur-3xl"></div>
-        </div>
-        
+    <header id="beranda" class="bg-blue-600 py-20 px-4 relative overflow-hidden">
         <div class="max-w-4xl mx-auto text-center relative z-10">
-            <span class="inline-block py-1 px-4 rounded-full bg-blue-100 text-blue-700 text-xs font-bold mb-6 tracking-widest uppercase">E-Learning Terbaik 2026</span>
-            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 leading-tight">
-                Lolos Kampus Impian dengan <span class="text-blue-600">Modul Terkurasi</span>
+            <span class="inline-block py-1 px-4 rounded-full bg-white/20 text-white text-xs font-bold mb-6 tracking-widest uppercase backdrop-blur-sm">E-Learning Terbaik 2026</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight">
+                Kuasai Ujianmu dengan <span class="text-orange-400">Latihan Tepat</span>
             </h1>
-            <p class="text-slate-500 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
-                Akses bank soal premium UTBK-SNBT, CPNS, dan Ujian Mandiri yang disusun berdasarkan kisi-kisi terbaru dan paling akurat.
+            <p class="text-blue-100 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
+                Koleksi soal premium untuk persiapan UTBK SNBT, Mandiri PTN, dan CPNS yang disusun berdasarkan kisi-kisi terbaru dan paling akurat.
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <div class="relative w-full max-w-md group">
+                <div class="relative w-full max-w-md">
                     <input id="search-input" type="text" placeholder="Cari modul (contoh: CPNS)..." 
-                           class="w-full pl-6 pr-14 py-4 rounded-2xl border-2 border-white shadow-xl focus:border-blue-500 outline-none transition-all group-hover:shadow-2xl">
-                    <button onclick="searchSoal()" class="absolute right-2 top-2 bg-blue-600 text-white p-2.5 rounded-xl hover:bg-blue-700 transition active:scale-95">
-                        <i class="fas fa-search"></i>
+                           class="w-full pl-6 pr-24 py-4 rounded-full shadow-lg focus:ring-4 focus:ring-blue-300 outline-none text-slate-800 transition">
+                    <button onclick="searchSoal()" class="absolute right-2 top-2 bg-orange-500 text-white py-2 px-6 rounded-full hover:bg-orange-600 transition font-bold shadow-md">
+                        Cari
                     </button>
                 </div>
-                <button onclick="bukaAI()" class="text-sm font-bold text-blue-600 bg-blue-50 px-6 py-4 rounded-2xl border border-blue-100 hover:bg-blue-100 transition flex items-center gap-2">
-                    Strategi Belajar AI ✨
-                </button>
             </div>
         </div>
     </header>
 
-    <section class="max-w-7xl mx-auto px-4 -mt-16 relative z-20">
-        <div class="bg-white rounded-3xl shadow-2xl shadow-slate-200/50 p-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="flex flex-col items-center text-center p-4">
-                <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 text-2xl mb-4">
-                    <i class="fas fa-users"></i>
-                </div>
-                <h4 class="font-extrabold text-2xl">15K+</h4>
-                <p class="text-slate-400 text-sm">Alumni Sukses</p>
+    <section class="bg-white py-10 border-b shadow-sm relative z-20 -mt-6 mx-4 rounded-2xl max-w-7xl lg:mx-auto">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div>
+                <div class="text-blue-600 text-3xl mb-2"><i class="fas fa-user-graduate"></i></div>
+                <div class="font-bold text-xl text-slate-800">10.000+</div>
+                <div class="text-slate-500 text-sm">Siswa Terbantu</div>
             </div>
-            <div class="flex flex-col items-center text-center p-4">
-                <div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 text-2xl mb-4">
-                    <i class="fas fa-file-invoice"></i>
-                </div>
-                <h4 class="font-extrabold text-2xl">500+</h4>
-                <p class="text-slate-400 text-sm">E-Book Premium</p>
+            <div>
+                <div class="text-emerald-500 text-3xl mb-2"><i class="fas fa-check-circle"></i></div>
+                <div class="font-bold text-xl text-slate-800">Akurat</div>
+                <div class="text-slate-500 text-sm">Sesuai Kisi-kisi</div>
             </div>
-            <div class="flex flex-col items-center text-center p-4">
-                <div class="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600 text-2xl mb-4">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <h4 class="font-extrabold text-2xl">Update</h4>
-                <p class="text-slate-400 text-sm">Materi Terbaru</p>
+            <div>
+                <div class="text-orange-500 text-3xl mb-2"><i class="fas fa-bolt"></i></div>
+                <div class="font-bold text-xl text-slate-800">Instan</div>
+                <div class="text-slate-500 text-sm">Langsung Download</div>
             </div>
-            <div class="flex flex-col items-center text-center p-4">
-                <div class="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600 text-2xl mb-4">
-                    <i class="fas fa-headset"></i>
-                </div>
-                <h4 class="font-extrabold text-2xl">24/7</h4>
-                <p class="text-slate-400 text-sm">Bantuan Belajar</p>
+            <div>
+                <div class="text-purple-500 text-3xl mb-2"><i class="fas fa-shield-alt"></i></div>
+                <div class="font-bold text-xl text-slate-800">Aman</div>
+                <div class="text-slate-500 text-sm">Transaksi Enkripsi</div>
             </div>
         </div>
     </section>
 
-    <main id="kategori" class="max-w-7xl mx-auto px-4 py-24">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-            <div class="max-w-md">
-                <h2 class="text-3xl font-extrabold text-slate-900 mb-3">Katalog Produk Pilihan</h2>
-                <p class="text-slate-500">Pilih modul yang sesuai dengan target impianmu tahun ini.</p>
+    <main id="kategori" class="max-w-7xl mx-auto px-4 py-20">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
+            <div>
+                <h2 class="text-3xl font-extrabold text-slate-800 border-l-4 border-blue-600 pl-4 mb-2">Koleksi Terpopuler</h2>
+                <p class="text-slate-500 pl-4">Pilih modul yang sesuai dengan target impianmu tahun ini.</p>
             </div>
             
             <div class="flex flex-wrap gap-2" id="filter-tabs">
-                <button onclick="filterKategori('semua', this)" class="filter-btn active px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-blue-600 text-white shadow-lg shadow-blue-100">Semua</button>
-                <button onclick="filterKategori('utbk', this)" class="filter-btn px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-white text-slate-500 hover:bg-slate-100 border border-slate-200">UTBK-SNBT</button>
-                <button onclick="filterKategori('mandiri', this)" class="filter-btn px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-white text-slate-500 hover:bg-slate-100 border border-slate-200">MANDIRI</button>
-                <button onclick="filterKategori('cpns', this)" class="filter-btn px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-white text-slate-500 hover:bg-slate-100 border border-slate-200">CPNS</button>
+                <button onclick="filterKategori('semua', this)" class="filter-btn active px-5 py-2 rounded-full text-sm font-bold transition bg-blue-600 text-white shadow-md">Semua</button>
+                <button onclick="filterKategori('utbk', this)" class="filter-btn px-5 py-2 rounded-full text-sm font-bold transition bg-gray-100 text-slate-600 hover:bg-gray-200">UTBK-SNBT</button>
+                <button onclick="filterKategori('mandiri', this)" class="filter-btn px-5 py-2 rounded-full text-sm font-bold transition bg-gray-100 text-slate-600 hover:bg-gray-200">MANDIRI PTN</button>
+                <button onclick="filterKategori('cpns', this)" class="filter-btn px-5 py-2 rounded-full text-sm font-bold transition bg-gray-100 text-slate-600 hover:bg-gray-200">CPNS</button>
             </div>
         </div>
         
-        <div id="daftar-soal" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div id="daftar-soal" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             </div>
 
-        <div id="empty-state" class="hidden flex flex-col items-center py-20">
-            <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 text-3xl mb-4">
+        <div id="empty-state" class="hidden flex flex-col items-center py-16">
+            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-gray-400 text-3xl mb-4">
                 <i class="fas fa-search"></i>
             </div>
-            <p class="text-slate-500 font-medium">Modul tidak ditemukan. Coba kata kunci lain.</p>
+            <p class="text-gray-500 font-medium">Modul tidak ditemukan. Coba kata kunci lain.</p>
         </div>
     </main>
 
@@ -192,97 +174,58 @@
             <div class="p-8">
                 <div class="flex justify-between items-center mb-8">
                     <img src="LOGO.jpg" alt="Logo" class="h-10 w-auto">
-                    <button onclick="tutupAuth()" class="text-slate-400 hover:text-slate-600 text-2xl transition-colors">&times;</button>
+                    <button onclick="tutupAuth()" class="text-slate-400 hover:text-slate-600 text-3xl transition-colors">&times;</button>
                 </div>
                 
                 <div id="login-form">
                     <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Selamat Datang!</h2>
-                    <p class="text-slate-500 text-sm mb-8">Masuk ke akun Anda untuk akses materi.</p>
+                    <p class="text-slate-500 text-sm mb-6">Masuk ke akun Anda untuk akses materi.</p>
                     
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Email</label>
-                            <input type="email" placeholder="email@contoh.com" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-xl focus:border-blue-500 focus:bg-white outline-none transition-all">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Email</label>
+                            <input type="email" placeholder="email@contoh.com" class="w-full bg-slate-50 border border-slate-200 p-4 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Password</label>
-                            <input type="password" placeholder="••••••••" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-xl focus:border-blue-500 focus:bg-white outline-none transition-all">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Password</label>
+                            <input type="password" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 p-4 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition">
                         </div>
                         <div class="text-right">
-                            <a href="#" class="text-xs font-bold text-blue-600">Lupa Password?</a>
+                            <a href="#" class="text-xs font-bold text-blue-600 hover:underline">Lupa Password?</a>
                         </div>
-                        <button onclick="dummyAuth('Masuk')" class="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl hover:bg-blue-700 shadow-xl shadow-blue-200 transition-all active:scale-[0.98]">
+                        <button onclick="dummyAuth('Masuk')" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-md transition active:scale-95">
                             Masuk Sekarang
                         </button>
                         <p class="text-center text-sm text-slate-500 pt-4">
-                            Belum punya akun? <button onclick="toggleAuthMode('register')" class="text-blue-600 font-bold">Daftar Gratis</button>
+                            Belum punya akun? <button onclick="toggleAuthMode('register')" class="text-blue-600 font-bold hover:underline">Daftar Gratis</button>
                         </p>
                     </div>
                 </div>
 
                 <div id="register-form" class="hidden">
                     <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Buat Akun Baru</h2>
-                    <p class="text-slate-500 text-sm mb-8">Mulai perjalanan suksesmu bersama kami.</p>
+                    <p class="text-slate-500 text-sm mb-6">Mulai perjalanan suksesmu bersama kami.</p>
                     
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Nama Lengkap</label>
-                            <input type="text" placeholder="Andi Pratama" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-xl focus:border-blue-500 focus:bg-white outline-none transition-all">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Nama Lengkap</label>
+                            <input type="text" placeholder="Andi Pratama" class="w-full bg-slate-50 border border-slate-200 p-4 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Email</label>
-                            <input type="email" placeholder="email@contoh.com" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-xl focus:border-blue-500 focus:bg-white outline-none transition-all">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Email</label>
+                            <input type="email" placeholder="email@contoh.com" class="w-full bg-slate-50 border border-slate-200 p-4 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Password</label>
-                            <input type="password" placeholder="Minimal 8 Karakter" class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-xl focus:border-blue-500 focus:bg-white outline-none transition-all">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Password</label>
+                            <input type="password" placeholder="Minimal 8 Karakter" class="w-full bg-slate-50 border border-slate-200 p-4 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition">
                         </div>
-                        <div class="flex items-start gap-3 pt-2">
-                            <input type="checkbox" id="terms" class="mt-1">
-                            <label for="terms" class="text-xs text-slate-500 leading-relaxed">Saya setuju dengan <a href="#" class="text-blue-600 font-semibold underline">Syarat & Ketentuan</a> yang berlaku.</label>
-                        </div>
-                        <button onclick="dummyAuth('Daftar')" class="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl hover:bg-blue-700 shadow-xl shadow-blue-200 transition-all active:scale-[0.98]">
+                        <button onclick="dummyAuth('Daftar')" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 shadow-md transition active:scale-95 mt-2">
                             Daftar Sekarang
                         </button>
                         <p class="text-center text-sm text-slate-500 pt-4">
-                            Sudah punya akun? <button onclick="toggleAuthMode('login')" class="text-blue-600 font-bold">Masuk di sini</button>
+                            Sudah punya akun? <button onclick="toggleAuthMode('login')" class="text-blue-600 font-bold hover:underline">Masuk di sini</button>
                         </p>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="ai-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl transform transition-all scale-95 opacity-0 duration-300 flex flex-col h-[80vh]" id="ai-content">
-            <div class="p-6 bg-gradient-to-r from-blue-600 to-indigo-700 flex justify-between items-center text-white shrink-0">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-bold">Asisten Belajar ✨</h2>
-                        <p class="text-xs text-blue-100">AI Marsiajar Siap Membantu</p>
-                    </div>
-                </div>
-                <button onclick="tutupAI()" class="text-2xl hover:text-blue-200">&times;</button>
-            </div>
-            
-            <div id="ai-chat-box" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar bg-slate-50">
-                <div class="flex gap-3">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-robot"></i></div>
-                    <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%]">
-                        Halo pejuang ujian! Saya AI Marsiajar. Kamu bisa tanya apa saja seputar strategi belajar atau detail modul kami. Ada yang bisa saya bantu? ✨
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-4 bg-white border-t border-slate-100 shrink-0">
-                <div class="flex gap-2">
-                    <input type="text" id="ai-input" placeholder="Tanyakan sesuatu..." class="flex-1 bg-slate-50 border-2 border-slate-100 p-3 rounded-xl focus:border-blue-500 outline-none transition-all">
-                    <button onclick="kirimPesanAI()" id="ai-send-btn" class="bg-blue-600 text-white p-3 px-5 rounded-xl hover:bg-blue-700 transition active:scale-95">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
                 </div>
             </div>
         </div>
@@ -290,205 +233,222 @@
 
     <div id="payment-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl transform transition-all scale-95 opacity-0 duration-300" id="modal-content">
-            <div class="relative h-32 bg-gradient-to-br from-blue-600 to-indigo-700 p-8">
-                <button onclick="tutupModal()" class="absolute top-4 right-4 text-white/70 hover:text-white transition-colors text-2xl">&times;</button>
-                <h2 class="text-2xl font-bold text-white">Konfirmasi Pembelian</h2>
-                <p class="text-blue-100 text-sm">Satu langkah lagi menuju sukses!</p>
+            <div class="relative bg-blue-600 p-6 flex justify-between items-center text-white">
+                <div>
+                    <h2 class="text-xl font-bold">Detail Pembelian</h2>
+                    <p class="text-blue-200 text-xs">Satu langkah menuju sukses!</p>
+                </div>
+                <button onclick="tutupModal()" class="text-white hover:text-gray-200 text-3xl">&times;</button>
             </div>
             
-            <div class="p-8">
-                <div class="flex gap-4 mb-8 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                    <div id="modal-icon-bg" class="w-16 h-16 rounded-xl flex items-center justify-center text-3xl shrink-0">
+            <div class="p-6">
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-6 flex items-center gap-4">
+                    <div id="modal-icon-bg" class="w-14 h-14 rounded-xl flex items-center justify-center text-3xl shrink-0">
                         <i id="modal-item-icon" class="fas"></i>
                     </div>
                     <div>
-                        <p id="modal-item-name" class="font-extrabold text-slate-800 leading-tight mb-1"></p>
-                        <div class="flex items-center gap-2">
-                            <span id="modal-item-price" class="text-blue-600 font-black text-xl"></span>
-                            <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Akses Selamanya</span>
-                        </div>
+                        <p id="modal-item-name" class="font-bold text-slate-800 leading-tight mb-1"></p>
+                        <p id="modal-item-price" class="text-blue-600 font-black text-lg"></p>
                     </div>
                 </div>
                 
-                <div class="space-y-5">
-                    <button onclick="generatePlanAI()" class="w-full bg-emerald-50 text-emerald-700 text-xs font-bold py-3 rounded-xl border border-emerald-100 hover:bg-emerald-100 transition-all flex items-center justify-center gap-2">
-                        Buat Rencana Belajar AI ✨
+                <div class="space-y-4">
+                    <button onclick="generatePlanAI()" class="w-full bg-emerald-50 text-emerald-700 text-sm font-bold py-3 rounded-xl border border-emerald-200 hover:bg-emerald-100 transition flex items-center justify-center gap-2">
+                        <i class="fas fa-magic"></i> Buat Rencana Belajar dengan AI
                     </button>
 
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Email Pengiriman (Wajib)</label>
+                        <label class="block text-xs font-bold text-slate-500 mb-1">Email Pengiriman (Wajib)</label>
                         <input type="email" id="buyer-email" placeholder="nama@email.com" 
-                               class="w-full bg-slate-50 border-2 border-slate-100 p-4 rounded-xl focus:border-blue-500 focus:bg-white outline-none transition-all">
+                               class="w-full border-2 border-slate-200 p-3 rounded-xl focus:border-blue-500 outline-none transition">
                     </div>
                     
                     <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Metode Pembayaran</p>
-                        <div class="grid grid-cols-2 gap-3">
-                            <label class="relative flex items-center justify-center border-2 border-blue-100 bg-blue-50 rounded-xl p-4 cursor-pointer hover:border-blue-300 transition-all">
-                                <input type="radio" name="payment" value="qris" class="hidden peer" checked>
-                                <span class="font-bold text-blue-700">QRIS (Otomatis)</span>
+                        <p class="text-xs font-bold text-slate-500 mb-2">Metode Pembayaran Instan</p>
+                        <div class="grid grid-cols-3 gap-3">
+                            <label class="border-2 border-blue-500 bg-blue-50 rounded-xl p-3 flex justify-center items-center cursor-pointer">
+                                <input type="radio" name="payment" value="qris" class="hidden" checked>
+                                <span class="font-bold text-blue-700">QRIS</span>
                             </label>
-                            <label class="relative flex items-center justify-center border-2 border-slate-100 rounded-xl p-4 cursor-pointer hover:border-slate-300 transition-all">
-                                <input type="radio" name="payment" value="va" class="hidden peer">
-                                <span class="font-bold text-slate-500">Virtual Account</span>
+                            <label class="border-2 border-slate-200 rounded-xl p-3 flex justify-center items-center cursor-pointer hover:border-slate-300 opacity-60">
+                                <input type="radio" name="payment" value="va" class="hidden">
+                                <span class="font-bold text-slate-600">VA</span>
+                            </label>
+                            <label class="border-2 border-slate-200 rounded-xl p-3 flex justify-center items-center cursor-pointer hover:border-slate-300 opacity-60">
+                                <input type="radio" name="payment" value="ovo" class="hidden">
+                                <span class="font-bold text-slate-600">OVO</span>
                             </label>
                         </div>
                     </div>
 
-                    <button onclick="prosesBayar()" class="w-full bg-blue-600 text-white font-bold py-5 rounded-2xl hover:bg-blue-700 shadow-xl shadow-blue-200 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
-                        <i class="fas fa-bolt"></i> Bayar Sekarang
+                    <button onclick="prosesBayar()" class="w-full bg-orange-500 text-white font-bold py-4 rounded-xl hover:bg-orange-600 shadow-md transition active:scale-95 mt-2">
+                        Bayar & Download Sekarang
                     </button>
-                    <p class="text-center text-[11px] text-slate-400 leading-relaxed italic">
-                        Link download akan dikirimkan otomatis ke email setelah verifikasi sistem berhasil.
-                    </p>
+                    <p class="text-center text-[10px] text-slate-400 italic">Link file PDF akan dikirimkan otomatis ke email Anda setelah pembayaran terverifikasi.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[2000] bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl transform translate-y-32 transition-transform duration-500 flex items-center gap-4">
-        <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs">
-            <i class="fas fa-check"></i>
+    <div id="ai-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl transform transition-all scale-95 opacity-0 duration-300 flex flex-col h-[80vh]" id="ai-content">
+            <div class="p-4 bg-gradient-to-r from-blue-600 to-blue-700 flex justify-between items-center text-white shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><i class="fas fa-robot"></i></div>
+                    <div>
+                        <h2 class="text-lg font-bold leading-tight">Asisten AI Marsiajar</h2>
+                        <p class="text-[10px] text-blue-100">Siap membantu strategi belajarmu</p>
+                    </div>
+                </div>
+                <button onclick="tutupAI()" class="text-2xl hover:text-gray-200 px-2">&times;</button>
+            </div>
+            
+            <div id="ai-chat-box" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar bg-slate-50">
+                <div class="flex gap-3">
+                    <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-robot"></i></div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%] text-slate-700">
+                        Halo pejuang PTN/CPNS! Saya AI Marsiajar. Kamu bisa tanyakan tips belajar, info modul, atau buat rencana belajar. Ada yang bisa dibantu? ✨
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-white border-t border-slate-200 shrink-0">
+                <div class="flex gap-2">
+                    <input type="text" id="ai-input" placeholder="Ketik pertanyaanmu..." class="flex-1 bg-slate-100 border border-slate-200 p-3 rounded-full focus:ring-2 focus:ring-blue-300 outline-none transition px-5 text-sm">
+                    <button onclick="kirimPesanAI()" id="ai-send-btn" class="bg-blue-600 text-white w-12 h-12 rounded-full hover:bg-blue-700 transition active:scale-95 flex items-center justify-center shadow-md">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-        <span id="toast-msg" class="text-sm font-semibold"></span>
     </div>
 
-    <button onclick="bukaAI()" class="ai-float-btn fixed bottom-6 right-6 w-16 h-16 bg-blue-600 text-white rounded-full shadow-2xl z-[400] flex items-center justify-center text-2xl hover:bg-blue-700 transition-all">
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[2000] bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl transform translate-y-32 transition-transform duration-500 flex items-center gap-3 w-max max-w-[90%]">
+        <div class="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center text-white text-[10px] shrink-0">
+            <i class="fas fa-check"></i>
+        </div>
+        <span id="toast-msg" class="text-sm font-semibold truncate"></span>
+    </div>
+
+    <button onclick="bukaAI()" class="ai-float-btn fixed bottom-8 right-8 w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl z-[400] flex items-center justify-center text-xl hover:bg-blue-700 transition-colors">
         <i class="fas fa-robot"></i>
     </button>
 
-    <section id="testimoni" class="bg-white py-24 px-4 overflow-hidden relative border-t border-slate-100">
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-extrabold text-slate-900 mb-4">Apa Kata Mereka?</h2>
-                <p class="text-slate-500">Kisah sukses dari ribuan siswa yang telah menggunakan Marsiajar.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl transition-shadow">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold">AR</div>
+    <section id="testimoni" class="bg-white py-20 px-4 border-t border-slate-100">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl font-extrabold text-slate-800 border-l-4 border-blue-600 pl-4 mb-10">Cerita Sukses Alumni</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-2xl bg-blue-50 border border-blue-100 hover:shadow-lg transition">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-lg">AR</div>
                         <div>
-                            <p class="font-bold text-slate-900">Andi Pratama</p>
-                            <p class="text-xs text-blue-600 font-semibold uppercase tracking-tighter">Lulus Teknik UI 2025</p>
+                            <p class="font-bold text-slate-800 leading-tight">Andi Pratama</p>
+                            <p class="text-xs text-blue-600 font-semibold uppercase">Lulus Teknik UI 2025</p>
                         </div>
                     </div>
-                    <div class="text-amber-400 mb-4 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p class="text-slate-600 text-sm leading-relaxed italic">"Soal-soal di modul Intensif UTBK-nya bener-bener mirip banget sama aslinya. Pembahasannya juga nggak bertele-tele!"</p>
+                    <div class="text-orange-400 mb-2 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-slate-600 text-sm italic">"Soal-soal di modul Intensif UTBK-nya bener-bener mirip sama aslinya. Pembahasannya nggak bertele-tele!"</p>
                 </div>
-                <div class="p-8 rounded-3xl bg-white border-2 border-blue-50 shadow-xl shadow-blue-100/50">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-400 to-indigo-600 flex items-center justify-center text-white font-bold">SW</div>
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-md">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-lg">SW</div>
                         <div>
-                            <p class="font-bold text-slate-900">Sari Wijaya</p>
-                            <p class="text-xs text-indigo-600 font-semibold uppercase tracking-tighter">Lolos CPNS 2024</p>
+                            <p class="font-bold text-slate-800 leading-tight">Sari Wijaya</p>
+                            <p class="text-xs text-emerald-600 font-semibold uppercase">Lolos CPNS 2024</p>
                         </div>
                     </div>
-                    <div class="text-amber-400 mb-4 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p class="text-slate-600 text-sm leading-relaxed italic">"Awalnya ragu, tapi setelah coba E-book CPNS di sini, progres belajar saya naik drastis. Alhamdulillah tahun ini NIP turun!"</p>
+                    <div class="text-orange-400 mb-2 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-slate-600 text-sm italic">"Awalnya ragu, tapi setelah coba E-book CPNS di sini, progres belajar saya naik drastis. Alhamdulillah NIP turun!"</p>
                 </div>
-                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-xl transition-shadow">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-bold">DP</div>
+                <div class="p-6 rounded-2xl bg-purple-50 border border-purple-100 hover:shadow-lg transition">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-lg">DP</div>
                         <div>
-                            <p class="font-bold text-slate-900">Dimas Putra</p>
-                            <p class="text-xs text-emerald-600 font-semibold uppercase tracking-tighter">Mandiri Unair 2025</p>
+                            <p class="font-bold text-slate-800 leading-tight">Dimas Putra</p>
+                            <p class="text-xs text-purple-600 font-semibold uppercase">Mandiri Unair 2025</p>
                         </div>
                     </div>
-                    <div class="text-amber-400 mb-4 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p class="text-slate-600 text-sm leading-relaxed italic">"Bank soalnya update terus. Sangat rekomended buat pejuang ujian mandiri yang pengen soal-soal level HOTS."</p>
+                    <div class="text-orange-400 mb-2 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-slate-600 text-sm italic">"Bank soalnya update terus. Sangat rekomended buat pejuang ujian mandiri yang pengen soal-soal level HOTS."</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-slate-950 text-slate-400 py-20 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+    <footer class="bg-slate-900 text-slate-400 py-16 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
             <div class="col-span-1 md:col-span-2">
                 <div class="flex items-center gap-3 mb-6">
-                    <img src="LOGO.jpg" alt="Logo Marsiajar Maretong" class="h-10 w-auto object-contain">
-                    <span class="text-white font-black text-xl tracking-tighter uppercase italic">Marsiajar Maretong</span>
+                    <img src="LOGO.jpg" alt="Logo" class="h-10 w-auto bg-white rounded p-1">
+                    <span class="text-white font-black text-xl tracking-tighter uppercase">Marsiajar</span>
                 </div>
-                <p class="max-w-xs text-sm leading-relaxed">
+                <p class="text-sm leading-relaxed max-w-sm mb-6">
                     Platform belajar digital masa depan Indonesia. Kami berkomitmen menyediakan materi berkualitas untuk membantu setiap siswa meraih mimpinya.
                 </p>
-                <div class="flex gap-4 mt-8">
-                    <a href="#" class="w-10 h-10 rounded-full border border-slate-800 flex items-center justify-center hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-all"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full border border-slate-800 flex items-center justify-center hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-all"><i class="fab fa-tiktok"></i></a>
-                    <a href="#" class="w-10 h-10 rounded-full border border-slate-800 flex items-center justify-center hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-all"><i class="fab fa-whatsapp"></i></a>
+                <div class="flex gap-3">
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-green-500 hover:text-white transition"><i class="fab fa-whatsapp"></i></a>
                 </div>
             </div>
             <div>
-                <h5 class="text-white font-bold mb-6">Perusahaan</h5>
-                <ul class="space-y-4 text-sm">
-                    <li><a href="#" class="hover:text-blue-500 transition">Tentang Kami</a></li>
-                    <li><a href="#" class="hover:text-blue-500 transition">Karir</a></li>
-                    <li><a href="#" class="hover:text-blue-500 transition">Partner Kami</a></li>
-                    <li><a href="#" class="hover:text-blue-500 transition">Kontak</a></li>
+                <h5 class="text-white font-bold mb-4">Informasi</h5>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="hover:text-blue-400 transition">Tentang Kami</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition">Cara Pembelian</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition">Hubungi CS</a></li>
                 </ul>
             </div>
             <div>
-                <h5 class="text-white font-bold mb-6">Legalitas</h5>
-                <ul class="space-y-4 text-sm">
-                    <li><a href="#" class="hover:text-blue-500 transition">Syarat & Ketentuan</a></li>
-                    <li><a href="#" class="hover:text-blue-500 transition">Kebijakan Privasi</a></li>
-                    <li><a href="#" class="hover:text-blue-500 transition">Refund Policy</a></li>
+                <h5 class="text-white font-bold mb-4">Legalitas</h5>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="hover:text-blue-400 transition">Syarat & Ketentuan</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition">Kebijakan Privasi</a></li>
+                    <li><a href="#" class="hover:text-blue-400 transition">Kebijakan Refund</a></li>
                 </ul>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto pt-8 border-t border-slate-900 text-center text-xs">
-            <p>&copy; 2026 Marsiajar Maretong. Dibuat dengan cinta untuk pendidikan Indonesia.</p>
+        <div class="max-w-7xl mx-auto pt-8 border-t border-slate-800 text-center text-xs">
+            <p>&copy; 2026 Marsiajar Maretong. Hak Cipta Dilindungi.</p>
         </div>
     </footer>
 
     <script>
-        // ==========================================
-        // 1. SUPABASE CONFIGURATION
-        // ==========================================
+        // 1. SETUP DATABASE SUPABASE (Milik Anda)
         const supabaseUrl = 'https://qyibrftzgezfatvbcqem.supabase.co';
         const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
+        // 2. SETUP AI GEMINI (Opsional jika ingin fitur chat berfungsi)
+        const apiKey = ""; 
+        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+        // 3. VARIABEL STATE
         let kumpulanSoal = [];
-
-        // ==========================================
-        // 2. GEMINI AI CONFIGURATION
-        // ==========================================
-        const apiKey = ""; // API Key Gemini (Optional)
-        const geminiModel = "gemini-2.5-flash-preview-09-2025";
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`;
-
-        // ==========================================
-        // 3. GLOBAL VARIABLES
-        // ==========================================
-        let currentFilter = 'semua';
         let selectedProduct = null;
         const wadah = document.getElementById('daftar-soal');
         const emptyState = document.getElementById('empty-state');
 
-        // ==========================================
-        // 4. FETCH DATA FROM SUPABASE
-        // ==========================================
+        // 4. FUNGSI AMBIL DATA (Panggil Supabase)
         async function fetchProducts() {
             try {
-                wadah.innerHTML = '<p class="text-slate-500 w-full text-center py-10">Memuat data modul dari database...</p>';
+                wadah.innerHTML = '<div class="col-span-full text-center py-10"><i class="fas fa-circle-notch fa-spin text-blue-600 text-3xl mb-3"></i><p class="text-slate-500 font-medium">Memuat katalog modul...</p></div>';
+                
                 const { data, error } = await supabase.from('products').select('*');
                 
                 if (error) {
-                    console.error("Gagal mengambil data:", error);
-                    wadah.innerHTML = '<p class="text-red-500 font-bold w-full text-center py-10">Gagal terhubung ke database. Pastikan tabel "products" telah dibuat di Supabase.</p>';
+                    console.error("Error DB:", error);
+                    wadah.innerHTML = '<div class="col-span-full text-center py-10 text-red-500 font-bold">Gagal mengambil data dari server. Pastikan tabel "products" sudah ada.</div>';
                 } else {
                     kumpulanSoal = data || [];
                     tampilkanSoal(kumpulanSoal);
                 }
             } catch (err) {
-                wadah.innerHTML = '<p class="text-red-500 font-bold w-full text-center py-10">Terjadi kesalahan pada sistem.</p>';
+                wadah.innerHTML = '<div class="col-span-full text-center py-10 text-red-500 font-bold">Terjadi kesalahan jaringan.</div>';
             }
         }
 
-        // ==========================================
-        // 5. UI & LOGIC FUNCTIONS
-        // ==========================================
+        // 5. FUNGSI TAMPILAN PRODUK
         function tampilkanSoal(data = kumpulanSoal) {
             if (!data || data.length === 0) {
                 wadah.innerHTML = '';
@@ -497,33 +457,29 @@
             }
             emptyState.classList.add('hidden');
             wadah.innerHTML = data.map(soal => `
-                <div class="product-card group bg-white rounded-3xl border border-slate-100 p-2 shadow-sm hover:shadow-2xl hover:shadow-blue-100 hover:-translate-y-2 transition-all duration-500 overflow-hidden relative">
-                    <div class="h-48 rounded-2xl ${soal.bg || 'bg-slate-100'} flex items-center justify-center relative overflow-hidden">
-                        ${soal.tag ? `<span class="absolute top-3 left-3 bg-white/80 backdrop-blur-md text-slate-900 text-[9px] font-black px-3 py-1 rounded-full z-10 shadow-sm">${soal.tag}</span>` : ''}
-                        <i class="fas ${soal.icon || 'fa-book'} text-6xl ${soal.warna || 'text-slate-500'} group-hover:scale-125 transition-transform duration-700"></i>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col">
+                    <div class="h-48 ${soal.bg || 'bg-slate-100'} flex items-center justify-center relative">
+                        ${soal.tag ? `<span class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-md z-10 shadow-sm">${soal.tag}</span>` : ''}
+                        <i class="fas ${soal.icon || 'fa-book'} text-6xl ${soal.warna || 'text-slate-400'} group-hover:scale-110 transition-transform duration-300"></i>
                         
-                        <div class="absolute inset-0 bg-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <button onclick="bukaModal(${soal.id})" class="buy-btn translate-y-4 opacity-0 bg-white text-blue-600 px-6 py-2 rounded-xl font-bold text-xs shadow-xl hover:bg-blue-600 hover:text-white transition-all duration-300">
-                                <i class="fas fa-eye mr-2"></i> Detail Produk
+                        <div class="absolute inset-0 bg-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                            <button onclick="bukaModal(${soal.id})" class="bg-white text-blue-600 px-5 py-2 rounded-full font-bold text-sm shadow-xl hover:bg-blue-600 hover:text-white transition-colors transform translate-y-4 group-hover:translate-y-0 duration-300">
+                                <i class="fas fa-eye mr-1"></i> Detail
                             </button>
                         </div>
                     </div>
-                    <div class="p-4 pt-5">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-slate-800 leading-snug h-10 overflow-hidden text-sm">${soal.title || soal.judul || 'Tanpa Judul'}</h3>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <p class="text-[10px] text-slate-400 mb-1 uppercase font-bold tracking-widest">${soal.category || soal.kategori || 'Digital Product'}</p>
+                            <h3 class="font-bold text-slate-800 mb-3 leading-snug line-clamp-2">${soal.title || soal.judul || 'Modul Tanpa Judul'}</h3>
                         </div>
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="text-[10px] text-slate-400 uppercase font-black tracking-widest">${soal.category || soal.kategori || 'UMUM'}</span>
-                            <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
-                            <span class="text-[10px] text-emerald-500 font-bold">Tersedia</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl">
+                        <div class="flex justify-between items-end border-t border-slate-100 pt-4 mt-2">
                             <div>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase">Harga</p>
-                                <span class="text-blue-600 font-black text-lg leading-none">Rp${soal.price ? soal.price.toLocaleString('id-ID') : 0}</span>
+                                ${soal.asli && soal.asli > soal.price ? `<span class="block text-[10px] text-slate-400 line-through">Rp ${soal.asli.toLocaleString('id-ID')}</span>` : ''}
+                                <span class="text-blue-600 font-black text-lg">Rp ${(soal.price || soal.harga || 0).toLocaleString('id-ID')}</span>
                             </div>
-                            <button onclick="bukaModal(${soal.id})" class="w-10 h-10 bg-white border border-slate-200 text-blue-600 rounded-lg hover:bg-blue-600 hover:border-blue-600 hover:text-white transition-all shadow-sm">
-                                <i class="fas fa-shopping-bag text-sm"></i>
+                            <button onclick="bukaModal(${soal.id})" class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors">
+                                <i class="fas fa-shopping-cart"></i>
                             </button>
                         </div>
                     </div>
@@ -531,22 +487,24 @@
             `).join('');
         }
 
+        // 6. LOGIKA FILTER & PENCARIAN
         function filterKategori(kat, elemenTombol) {
-            currentFilter = kat;
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-100');
-                btn.classList.add('bg-white', 'text-slate-500', 'border-slate-200');
-            });
-            
             if(elemenTombol) {
-                elemenTombol.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-100');
-                elemenTombol.classList.remove('bg-white', 'text-slate-500', 'border-slate-200');
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active', 'bg-blue-600', 'text-white', 'shadow-md');
+                    btn.classList.add('bg-gray-100', 'text-slate-600');
+                });
+                elemenTombol.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-md');
+                elemenTombol.classList.remove('bg-gray-100', 'text-slate-600');
             }
 
             if (kat === 'semua') {
                 tampilkanSoal(kumpulanSoal);
             } else {
-                const hasil = kumpulanSoal.filter(s => (s.category || s.kategori) === kat);
+                const hasil = kumpulanSoal.filter(s => {
+                    const kategoriData = (s.category || s.kategori || '').toLowerCase();
+                    return kategoriData === kat;
+                });
                 tampilkanSoal(hasil);
             }
         }
@@ -562,9 +520,7 @@
             if(section) section.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // ==========================================
-        // 6. MODAL & AUTH FUNCTIONS
-        // ==========================================
+        // 7. FUNGSI MODAL PEMBELIAN
         function bukaModal(id) {
             const item = kumpulanSoal.find(s => s.id === id);
             if(!item) return;
@@ -574,9 +530,9 @@
             const content = document.getElementById('modal-content');
             
             document.getElementById('modal-item-name').innerText = item.title || item.judul;
-            document.getElementById('modal-item-price').innerText = "Rp" + (item.price || item.harga).toLocaleString('id-ID');
+            document.getElementById('modal-item-price').innerText = "Rp " + (item.price || item.harga || 0).toLocaleString('id-ID');
             document.getElementById('modal-item-icon').className = `fas ${item.icon || 'fa-book'} ${item.warna || 'text-slate-500'}`;
-            document.getElementById('modal-icon-bg').className = `w-16 h-16 rounded-xl flex items-center justify-center text-3xl shrink-0 ${item.bg || 'bg-slate-100'}`;
+            document.getElementById('modal-icon-bg').className = `w-14 h-14 rounded-xl flex items-center justify-center text-3xl shrink-0 ${item.bg || 'bg-slate-100'}`;
             
             modal.classList.remove('hidden');
             setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
@@ -593,13 +549,23 @@
             }, 300);
         }
 
-        // FUNGSI INI YANG SEBELUMNYA MATI
+        function prosesBayar() {
+            const email = document.getElementById('buyer-email').value;
+            if(!email || !email.includes('@')) {
+                showToast("❌ Silakan masukkan email yang valid terlebih dahulu!");
+                return;
+            }
+            tutupModal();
+            setTimeout(() => {
+                showToast("✅ Instruksi pembayaran & Link PDF dikirim ke: " + email);
+            }, 500);
+        }
+
+        // 8. FUNGSI MODAL AUTH (LOGIN/DAFTAR)
         function bukaAuth(mode) {
             const modal = document.getElementById('auth-modal');
             const content = document.getElementById('auth-content');
-            
             toggleAuthMode(mode);
-            
             modal.classList.remove('hidden');
             setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
             document.body.classList.add('modal-active');
@@ -618,7 +584,6 @@
         function toggleAuthMode(mode) {
             const loginForm = document.getElementById('login-form');
             const registerForm = document.getElementById('register-form');
-            
             if(mode === 'login') {
                 loginForm.classList.remove('hidden');
                 registerForm.classList.add('hidden');
@@ -633,53 +598,20 @@
             tutupAuth();
         }
 
-        function prosesBayar() {
-            const email = document.getElementById('buyer-email').value;
-            if(!email || !email.includes('@')) {
-                showToast("❌ Silakan masukkan email yang valid!");
-                return;
-            }
-            tutupModal();
-            setTimeout(() => {
-                showToast("✅ Instruksi pembayaran dikirim ke " + email);
-            }, 500);
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-msg');
-            if(toast && toastMsg) {
-                toastMsg.innerText = msg;
-                toast.classList.remove('translate-y-32');
-                setTimeout(() => toast.classList.add('translate-y-32'), 4000);
-            }
-        }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            if(menu) menu.classList.toggle('translate-x-full');
-        }
-
-        // ==========================================
-        // 7. AI FUNCTIONS
-        // ==========================================
+        // 9. FUNGSI AI (CHAT & PLANNER)
         async function panggilGemini(prompt, systemPrompt = "Kamu adalah asisten belajar.") {
-            if(!apiKey) throw new Error("API Key Gemini belum diisi!");
-            try {
-                const response = await fetch(geminiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }],
-                        systemInstruction: { parts: [{ text: systemPrompt }] }
-                    })
-                });
-                if (!response.ok) throw new Error('API Error');
-                const result = await response.json();
-                return result.candidates?.[0]?.content?.parts?.[0]?.text;
-            } catch (error) {
-                throw error;
-            }
+            if(!apiKey) throw new Error("API Key Gemini kosong!");
+            const response = await fetch(geminiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] }
+                })
+            });
+            if (!response.ok) throw new Error('API Error');
+            const result = await response.json();
+            return result.candidates?.[0]?.content?.parts?.[0]?.text;
         }
 
         function bukaAI() {
@@ -717,7 +649,7 @@
             const loadingId = 'ai-loading-' + Date.now();
             box.innerHTML += `
                 <div class="flex gap-3 animate-pulse" id="${loadingId}">
-                    <div class="w-8 h-8 bg-slate-300 rounded-lg shrink-0"></div>
+                    <div class="w-8 h-8 bg-slate-200 rounded-full shrink-0"></div>
                     <div class="bg-slate-200 w-1/2 h-10 rounded-2xl"></div>
                 </div>
             `;
@@ -728,13 +660,13 @@
                 document.getElementById(loadingId).remove();
                 box.innerHTML += `
                     <div class="flex gap-3">
-                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-robot"></i></div>
-                        <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%] whitespace-pre-line">${aiResponse}</div>
+                        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-robot"></i></div>
+                        <div class="bg-white border border-slate-200 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%] text-slate-700 whitespace-pre-line">${aiResponse}</div>
                     </div>
                 `;
             } catch (err) {
                 document.getElementById(loadingId).remove();
-                box.innerHTML += `<p class="text-center text-xs text-red-500 italic">Fitur AI membutuhkan API Key Gemini.</p>`;
+                box.innerHTML += `<p class="text-center text-xs text-red-500 italic mt-2">Sistem AI belum aktif (Butuh API Key Gemini).</p>`;
             }
             box.scrollTop = box.scrollHeight;
         }
@@ -744,7 +676,7 @@
             showToast("✨ AI sedang merancang strategi belajarmu...");
             
             const judulProduk = selectedProduct.title || selectedProduct.judul;
-            const prompt = `Berikan rencana belajar ringkas untuk paket: "${judulProduk}". Jelaskan langkah 1-3.`;
+            const prompt = `Buatkan jadwal belajar 3 langkah praktis untuk modul: "${judulProduk}".`;
             
             try {
                 const plan = await panggilGemini(prompt);
@@ -752,37 +684,47 @@
                 const box = document.getElementById('ai-chat-box');
                 box.innerHTML += `
                     <div class="flex gap-3">
-                        <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-magic"></i></div>
-                        <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%] whitespace-pre-line">
-                            <strong>Strategi Belajar AI untuk ${judulProduk}:</strong>\n\n${plan}
+                        <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs shrink-0"><i class="fas fa-magic"></i></div>
+                        <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl rounded-tl-none text-sm shadow-sm max-w-[85%] text-slate-700 whitespace-pre-line">
+                            <strong>Roadmap Belajar: ${judulProduk}</strong>\n\n${plan}
                         </div>
                     </div>
                 `;
                 box.scrollTop = box.scrollHeight;
             } catch (err) {
-                showToast("❌ Fitur AI membutuhkan API Key.");
+                showToast("❌ Fitur AI Planner belum diaktifkan (Butuh API Key).");
             }
         }
 
-        // ==========================================
-        // 8. EVENT LISTENERS & INIT
-        // ==========================================
+        // 10. FUNGSI UTILITAS
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            if(toast && toastMsg) {
+                toastMsg.innerText = msg;
+                toast.classList.remove('translate-y-32');
+                setTimeout(() => toast.classList.add('translate-y-32'), 4000);
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if(menu) menu.classList.toggle('translate-x-full');
+        }
+
+        // EVENT LISTENER
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('search-input');
             if(searchInput) {
-                searchInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') searchSoal();
-                });
+                searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') searchSoal(); });
             }
 
             const aiInput = document.getElementById('ai-input');
             if(aiInput) {
-                aiInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') kirimPesanAI();
-                });
+                aiInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') kirimPesanAI(); });
             }
             
-            // Panggil data saat halaman selesai dimuat
+            // Minta data ke database saat web dibuka
             fetchProducts();
         });
     </script>
