@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,7 +50,7 @@
 </head>
 <body class="bg-slate-50 text-slate-900">
 
-    <nav class="glass-nav border-b border-slate-200 sticky top-0 z-[100]">
+    <nav class="glass-nav border-b border-slate-200 sticky top-0 z-[500]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center gap-3">
@@ -81,7 +80,7 @@
         </div>
     </nav>
 
-    <div id="mobile-menu" class="fixed inset-0 bg-white z-[110] translate-x-full transition-transform duration-300 md:hidden p-6">
+    <div id="mobile-menu" class="fixed inset-0 bg-white z-[600] translate-x-full transition-transform duration-300 md:hidden p-6">
         <div class="flex justify-between items-center mb-10">
             <div class="flex items-center gap-2">
                 <img src="LOGO.jpg" alt="Logo" class="h-10 w-auto">
@@ -171,10 +170,10 @@
             </div>
             
             <div class="flex flex-wrap gap-2" id="filter-tabs">
-                <button onclick="filterKategori('semua')" class="filter-btn active px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-blue-600 text-white shadow-lg shadow-blue-100">Semua</button>
-                <button onclick="filterKategori('utbk')" class="filter-btn px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-white text-slate-500 hover:bg-slate-100 border border-slate-200">UTBK-SNBT</button>
-                <button onclick="filterKategori('mandiri')" class="filter-btn px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-white text-slate-500 hover:bg-slate-100 border border-slate-200">MANDIRI</button>
-                <button onclick="filterKategori('cpns')" class="filter-btn px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-white text-slate-500 hover:bg-slate-100 border border-slate-200">CPNS</button>
+                <button onclick="filterKategori('semua', this)" class="filter-btn active px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-blue-600 text-white shadow-lg shadow-blue-100">Semua</button>
+                <button onclick="filterKategori('utbk', this)" class="filter-btn px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-white text-slate-500 hover:bg-slate-100 border border-slate-200">UTBK-SNBT</button>
+                <button onclick="filterKategori('mandiri', this)" class="filter-btn px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-white text-slate-500 hover:bg-slate-100 border border-slate-200">MANDIRI</button>
+                <button onclick="filterKategori('cpns', this)" class="filter-btn px-6 py-2.5 rounded-xl text-sm font-bold transition-all bg-white text-slate-500 hover:bg-slate-100 border border-slate-200">CPNS</button>
             </div>
         </div>
         
@@ -189,7 +188,7 @@
         </div>
     </main>
 
-    <div id="ai-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[400] flex items-center justify-center p-4">
+    <div id="ai-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl transform transition-all scale-95 opacity-0 duration-300 flex flex-col h-[80vh]" id="ai-content">
             <div class="p-6 bg-gradient-to-r from-blue-600 to-indigo-700 flex justify-between items-center text-white shrink-0">
                 <div class="flex items-center gap-3">
@@ -224,7 +223,7 @@
         </div>
     </div>
 
-    <div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[300] flex items-center justify-center p-4">
+    <div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl transform transition-all scale-95 opacity-0 duration-300" id="auth-content">
             <div class="p-8">
                 <div class="flex justify-between items-center mb-8">
@@ -290,7 +289,7 @@
         </div>
     </div>
 
-    <div id="payment-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+    <div id="payment-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl transform transition-all scale-95 opacity-0 duration-300" id="modal-content">
             <div class="relative h-32 bg-gradient-to-br from-blue-600 to-indigo-700 p-8">
                 <button onclick="tutupModal()" class="absolute top-4 right-4 text-white/70 hover:text-white transition-colors text-2xl">&times;</button>
@@ -348,14 +347,14 @@
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[500] bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl transform translate-y-32 transition-transform duration-500 flex items-center gap-4">
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[2000] bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl transform translate-y-32 transition-transform duration-500 flex items-center gap-4">
         <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs">
             <i class="fas fa-check"></i>
         </div>
         <span id="toast-msg" class="text-sm font-semibold"></span>
     </div>
 
-    <button onclick="bukaAI()" class="ai-float-btn fixed bottom-6 right-6 w-16 h-16 bg-blue-600 text-white rounded-full shadow-2xl z-[350] flex items-center justify-center text-2xl hover:bg-blue-700 transition-all">
+    <button onclick="bukaAI()" class="ai-float-btn fixed bottom-6 right-6 w-16 h-16 bg-blue-600 text-white rounded-full shadow-2xl z-[400] flex items-center justify-center text-2xl hover:bg-blue-700 transition-all">
         <i class="fas fa-robot"></i>
     </button>
 
@@ -472,10 +471,8 @@
         // 4. FUNGSI MENGAMBIL DATA DARI DATABASE
         // ==========================================
         async function fetchProducts() {
-            // Tampilkan loading sementara
             wadah.innerHTML = '<p class="text-slate-500 w-full text-center py-10">Memuat data modul dari database...</p>';
 
-            // Mengambil semua data dari tabel 'products' yang ada di Supabase
             const { data, error } = await supabase.from('products').select('*');
             
             if (error) {
@@ -483,9 +480,7 @@
                 wadah.innerHTML = '<p class="text-red-500 font-bold w-full text-center py-10">Gagal terhubung ke database. Pastikan tabel telah dibuat di Supabase.</p>';
                 showToast("❌ Gagal memuat data dari database.");
             } else {
-                // Jika sukses, masukkan data dari database ke variabel kumpulanSoal
                 kumpulanSoal = data;
-                // Lalu tampilkan ke layar
                 tampilkanSoal(kumpulanSoal);
             }
         }
@@ -536,16 +531,17 @@
             `).join('');
         }
 
-        // Logic Filter Kategori
-        function filterKategori(kat) {
+        // Logic Filter Kategori - DIPERBAIKI
+        function filterKategori(kat, elemenTombol) {
             currentFilter = kat;
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active', 'bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-100');
                 btn.classList.add('bg-white', 'text-slate-500', 'border-slate-200');
             });
-            if(event) {
-                event.target.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-100');
-                event.target.classList.remove('bg-white', 'text-slate-500', 'border-slate-200');
+            
+            if(elemenTombol) {
+                elemenTombol.classList.add('active', 'bg-blue-600', 'text-white', 'shadow-lg', 'shadow-blue-100');
+                elemenTombol.classList.remove('bg-white', 'text-slate-500', 'border-slate-200');
             }
 
             if (kat === 'semua') {
@@ -556,7 +552,6 @@
             }
         }
 
-        // Logic Search
         function searchSoal() {
             const keyword = document.getElementById('search-input').value.toLowerCase();
             const hasil = kumpulanSoal.filter(s => 
@@ -571,7 +566,6 @@
             if (e.key === 'Enter') searchSoal();
         });
 
-        // Modal Management
         function bukaModal(id) {
             const item = kumpulanSoal.find(s => s.id === id);
             selectedProduct = item;
