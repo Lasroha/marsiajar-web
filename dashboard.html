@@ -11,9 +11,8 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; scroll-behavior: smooth; }
         
-        /* Navigasi Sidebar */
         .sidebar-link { 
             display: flex; 
             align-items: center; 
@@ -23,13 +22,21 @@
             font-weight: 700; 
             color: #94a3b8; 
             transition: all 0.3s ease;
+            cursor: pointer;
         }
         .sidebar-link i { width: 1.25rem; text-align: center; font-size: 1.1rem; }
         .sidebar-link:hover { background-color: #f1f5f9; color: #2563eb; }
         .sidebar-link.active { background-color: #2563eb; color: #ffffff; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2); }
         
+        .section-content { display: none; }
+        .section-content.active { display: block; }
+
         .badge-lunas { @apply bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase; }
         .badge-pending { @apply bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase; }
+        
+        /* Custom Card Dashboard */
+        .dash-card { transition: all 0.3s ease; }
+        .dash-card:hover { transform: translateY(-5px); }
     </style>
 </head>
 <body class="text-slate-800">
@@ -45,13 +52,10 @@
         <nav class="flex-1 px-4 space-y-1">
             <p class="px-5 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-3">Main Menu</p>
             
-            <a href="#" class="sidebar-link active">
+            <a onclick="showSection('beranda', this)" class="sidebar-link active">
                 <i class="fas fa-th-large"></i> <span>Beranda</span>
             </a>
-            <a href="#my-modules-grid-section" class="sidebar-link">
-                <i class="fas fa-book-reader"></i> <span>Modul Saya</span>
-            </a>
-            <a href="index.html#kategori" class="sidebar-link">
+            <a onclick="showSection('katalog', this)" class="sidebar-link">
                 <i class="fas fa-shopping-bag"></i> <span>Katalog Modul</span>
             </a>
             
@@ -67,20 +71,16 @@
             </a>
         </nav>
 
-        <div class="px-6 mb-8">
-            <div class="bg-slate-900 rounded-[2rem] p-6 text-white relative overflow-hidden shadow-xl shadow-slate-200">
+        <div class="px-6 mb-8 text-center">
+            <div class="bg-slate-900 rounded-[2rem] p-5 text-white relative overflow-hidden shadow-xl">
                 <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2">Menuju UTBK 2026</p>
-                <h4 id="countdown" class="text-2xl font-black italic">--- Hari</h4>
-                <div class="mt-4 h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <div class="h-full bg-blue-500 w-1/4"></div>
-                </div>
-                <i class="fas fa-rocket absolute -right-3 -bottom-3 text-5xl opacity-10 -rotate-12"></i>
+                <h4 id="countdown" class="text-xl font-black italic">--- Hari</h4>
             </div>
         </div>
 
         <div class="p-6 border-t border-slate-50">
-            <button onclick="logout()" class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-bold text-red-500 hover:bg-red-50 transition-all group">
-                <i class="fas fa-sign-out-alt transition-transform group-hover:-translate-x-1"></i> <span>Keluar Akun</span>
+            <button onclick="logout()" class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-bold text-red-500 hover:bg-red-50 transition-all">
+                <i class="fas fa-sign-out-alt"></i> <span>Keluar Akun</span>
             </button>
         </div>
     </aside>
@@ -89,65 +89,60 @@
         
         <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
             <div>
-                <h1 class="text-3xl font-black text-slate-900 tracking-tight leading-tight">Halo, <span id="user-name" class="text-blue-600">Siswa</span>! 👋</h1>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight leading-tight">Halo, <span id="user-name" class="text-blue-600 uppercase">Siswa</span>! 👋</h1>
                 <p class="text-slate-500 font-semibold mt-1 uppercase text-[10px] tracking-widest opacity-70">Panel Belajar Eksklusif</p>
             </div>
             <div class="flex items-center gap-4 bg-white p-3 pr-8 rounded-[2rem] shadow-sm border border-slate-100">
                 <div id="user-initial" class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black uppercase text-xl">M</div>
                 <div>
                     <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest leading-none mb-1">Terverifikasi</p>
-                    <p id="user-email" class="text-xs font-bold text-slate-400 leading-none">email@siswa.com</p>
+                    <p id="user-email" class="text-xs font-bold text-slate-400 leading-none text-blue-600">email@siswa.com</p>
                 </div>
             </div>
         </header>
 
-        <div class="mb-12">
-            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-10 rounded-[3rem] text-white shadow-2xl shadow-blue-200 relative overflow-hidden">
-                <div class="relative z-10 flex items-center justify-between">
-                    <div>
-                        <p class="text-blue-100 text-[10px] font-black uppercase tracking-[0.2em] mb-4 opacity-80">Modul Yang Kamu Miliki</p>
-                        <h3 id="stat-modul" class="text-7xl font-black tracking-tighter leading-none">0</h3>
+        <div id="section-beranda" class="section-content active">
+            <div class="mb-12">
+                <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-10 rounded-[3rem] text-white shadow-2xl shadow-blue-200 relative overflow-hidden">
+                    <div class="relative z-10 flex items-center justify-between">
+                        <div>
+                            <p class="text-blue-100 text-[10px] font-black uppercase tracking-[0.2em] mb-4 opacity-80">Modul Yang Kamu Miliki</p>
+                            <h3 id="stat-modul" class="text-7xl font-black tracking-tighter leading-none">0</h3>
+                        </div>
                     </div>
-                    <div class="hidden sm:block text-right">
-                        <p class="text-white font-black text-xl italic leading-tight">Terus Belajar,<br>Maretong Terus! 🚀</p>
-                    </div>
-                </div>
-                <i class="fas fa-graduation-cap absolute -right-6 -bottom-6 text-[12rem] opacity-10 rotate-12"></i>
-            </div>
-        </div>
-
-        <section id="my-modules-grid-section" class="mb-16">
-            <h2 class="text-2xl font-black text-slate-900 mb-8 px-2 flex items-center gap-3">
-                <i class="fas fa-book text-blue-600"></i> Modul Saya
-            </h2>
-            <div id="my-modules-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="col-span-full text-center py-20 text-slate-400">
-                    <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
-                    <p class="text-[10px] font-bold uppercase tracking-widest">Sinkronisasi materi...</p>
+                    <i class="fas fa-graduation-cap absolute -right-6 -bottom-6 text-[12rem] opacity-10 rotate-12"></i>
                 </div>
             </div>
-        </section>
 
-        <section>
-            <h2 class="text-2xl font-black text-slate-900 mb-8 px-2 flex items-center gap-3 text-blue-600">
-                <i class="fas fa-history"></i> Log Aktivitas Pembelian
-            </h2>
-            <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
-                <div class="overflow-x-auto">
+            <section class="mb-16">
+                <h2 class="text-2xl font-black text-slate-900 mb-8 px-2 flex items-center gap-3">
+                    <i class="fas fa-book text-blue-600"></i> Modul Saya
+                </h2>
+                <div id="my-modules-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <p class="col-span-full text-center py-10 opacity-50">Memuat materi...</p>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-black text-slate-900 mb-8 px-2 flex items-center gap-3 text-blue-600">
+                    <i class="fas fa-history"></i> Log Aktivitas Pembelian
+                </h2>
+                <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-slate-50 font-black text-slate-400 uppercase text-[10px] tracking-widest">
-                            <tr>
-                                <th class="p-6">Waktu</th>
-                                <th class="p-6">Produk</th>
-                                <th class="p-6 text-center">Status</th>
-                            </tr>
+                            <tr><th class="p-6">Waktu</th><th class="p-6">Produk</th><th class="p-6 text-center">Status</th></tr>
                         </thead>
-                        <tbody id="purchase-history" class="divide-y divide-slate-50 font-semibold text-slate-600">
-                        </tbody>
+                        <tbody id="purchase-history" class="divide-y divide-slate-50 font-semibold text-slate-600"></tbody>
                     </table>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
+
+        <div id="section-katalog" class="section-content">
+            <h2 class="text-4xl font-black text-slate-900 mb-10 tracking-tight">Pilih Modul Baru</h2>
+            <div id="katalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+        </div>
 
     </main>
 
@@ -156,14 +151,50 @@
         const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
         const client = supabase.createClient(supabaseUrl, supabaseKey);
 
+        function showSection(sectionId, btn) {
+            document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            
+            document.getElementById('section-' + sectionId).classList.add('active');
+            btn.classList.add('active');
+            
+            if(sectionId === 'katalog') loadKatalogDashboard();
+        }
+
+        async function loadKatalogDashboard() {
+            const grid = document.getElementById('katalog-grid');
+            grid.innerHTML = '<p class="col-span-full text-center py-20 font-bold opacity-50">Menyiapkan Katalog...</p>';
+            
+            const { data } = await client.from('products').select('*').order('id', { ascending: false });
+            if (data) {
+                grid.innerHTML = data.map(item => `
+                    <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm dash-card">
+                        <div class="w-14 h-14 ${item.bg || 'bg-blue-50'} rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas ${item.icon || 'fa-book'} ${item.warna || 'text-blue-600'} text-2xl"></i>
+                        </div>
+                        <h4 class="font-black text-lg text-slate-800 uppercase mb-4 leading-tight">${item.judul || item.title}</h4>
+                        <div class="flex items-center justify-between mt-6 pt-6 border-t border-slate-50">
+                            <p class="text-xl font-black text-blue-600 tracking-tighter">Rp ${item.harga.toLocaleString()}</p>
+                            <button onclick="pesanLagi('${item.judul || item.title}', ${item.harga})" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all">Beli</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function pesanLagi(nama, harga) {
+            const email = JSON.parse(localStorage.getItem('user_marsiajar')).email;
+            const noWA = "6282277175018"; 
+            const pesan = `Halo Admin Marsiajar! 👋\n\nSaya ingin memesan modul baru:\n*${nama}*\n\nInvestasi: *Rp ${harga.toLocaleString()}*\nEmail saya: *${email}*\n\nMohon instruksi pembayarannya ya min.`;
+            window.open(`https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`, '_blank');
+        }
+
         function updateCountdown() {
             const target = new Date("May 1, 2026 00:00:00").getTime();
             const now = new Date().getTime();
-            const diff = target - now;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const days = Math.floor((target - now) / (1000 * 60 * 60 * 24));
             document.getElementById('countdown').innerText = days + " Hari Lagi";
         }
-        updateCountdown();
 
         document.addEventListener('DOMContentLoaded', async () => {
             const userData = localStorage.getItem('user_marsiajar');
@@ -172,52 +203,39 @@
             document.getElementById('user-name').innerText = user.nama;
             document.getElementById('user-email').innerText = user.email;
             document.getElementById('user-initial').innerText = user.nama.charAt(0);
+            updateCountdown();
             await loadUserActivity(user.email);
         });
 
         async function loadUserActivity(email) {
             const modulesGrid = document.getElementById('my-modules-grid');
             const historyTable = document.getElementById('purchase-history');
-            const statModul = document.getElementById('stat-modul');
+            const { data } = await client.from('log_pembeli').select('*').eq('email', email).order('created_at', { ascending: false });
 
-            try {
-                const { data, error } = await client
-                    .from('log_pembeli')
-                    .select('*')
-                    .eq('email', email)
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-
-                if (!data || data.length === 0) {
-                    historyTable.innerHTML = `<tr><td colspan="3" class="p-16 text-center text-slate-400 font-bold uppercase text-[10px] opacity-50 tracking-widest">Tidak ada riwayat transaksi</td></tr>`;
-                    modulesGrid.innerHTML = `<div class="col-span-full text-center py-24 bg-white rounded-[3rem] border-2 border-dashed border-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest">Belum ada modul yang dibeli</div>`;
-                    return;
-                }
-
+            if (data && data.length > 0) {
                 historyTable.innerHTML = data.map(item => `
                     <tr>
-                        <td class="p-6 text-xs font-bold text-slate-400">${new Date(item.created_at).toLocaleDateString('id-ID')}</td>
+                        <td class="p-6 text-xs font-bold text-slate-400">${new Date(item.created_at).toLocaleDateString()}</td>
                         <td class="p-6 font-black text-slate-800 uppercase text-xs">${item.produk_diminati}</td>
                         <td class="p-6 text-center"><span class="${item.status === 'Lunas' ? 'badge-lunas' : 'badge-pending'}">${item.status || 'Pending'}</span></td>
                     </tr>`).join('');
 
-                const lunasModules = data.filter(item => item.status === 'Lunas');
-                statModul.innerText = lunasModules.length;
-
-                if (lunasModules.length > 0) {
-                    modulesGrid.innerHTML = lunasModules.map(item => `
-                        <div class="bg-white p-8 rounded-[2.5rem] border-2 border-slate-50 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-6 hover:border-blue-500 transition-all duration-300">
+                const lunas = data.filter(i => i.status === 'Lunas');
+                document.getElementById('stat-modul').innerText = lunas.length;
+                
+                if(lunas.length > 0) {
+                    modulesGrid.innerHTML = lunas.map(item => `
+                        <div class="bg-white p-8 rounded-[2.5rem] border-2 border-slate-50 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-6 hover:border-blue-500 transition-all">
                             <div class="text-center sm:text-left">
                                 <p class="text-[10px] font-black text-blue-600 mb-2 uppercase tracking-widest">Terverifikasi</p>
                                 <h4 class="font-black text-lg text-slate-800 uppercase leading-tight">${item.produk_diminati}</h4>
                             </div>
-                            <button onclick="alert('Link akses sedang diproses.')" class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black text-[10px] hover:bg-blue-600 transition-all uppercase tracking-[0.2em] shadow-xl shadow-slate-200">Akses Modul</button>
+                            <button class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl">Akses Modul</button>
                         </div>`).join('');
                 } else {
-                    modulesGrid.innerHTML = `<div class="col-span-full bg-orange-50 p-12 rounded-[3rem] text-center text-orange-600 font-bold text-[10px] uppercase tracking-widest border-2 border-dashed border-orange-200">Menunggu verifikasi pembayaran admin...</div>`;
+                    modulesGrid.innerHTML = `<div class="col-span-full bg-orange-50 p-12 rounded-[3rem] text-center text-orange-600 font-bold text-[10px] uppercase border-2 border-dashed border-orange-200">Verifikasi admin sedang berjalan...</div>`;
                 }
-            } catch (err) { console.error(err); }
+            }
         }
 
         function logout() {
