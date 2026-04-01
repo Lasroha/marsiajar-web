@@ -188,48 +188,63 @@
         }
 
         // ==========================================
-        // 3. MENAMBAH DATA (CREATE)
+        // 3. MENAMBAH DATA (CREATE) - VERSI REVISI
         // ==========================================
         async function tambahProduk(event) {
             event.preventDefault(); // Mencegah halaman refresh
             
             const btn = document.getElementById('btn-submit');
+            const teksAsli = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Menyimpan...';
             btn.disabled = true;
 
-            // Mapping Warna Tema ke class Tailwind
-            const temaDipilih = document.querySelector('input[name="tema"]:checked').value;
-            const mappingWarna = {
-                blue: { warna: 'text-blue-500', bg: 'bg-blue-50' },
-                red: { warna: 'text-red-500', bg: 'bg-red-50' },
-                emerald: { warna: 'text-emerald-500', bg: 'bg-emerald-50' },
-                purple: { warna: 'text-purple-500', bg: 'bg-purple-50' },
-                orange: { warna: 'text-orange-500', bg: 'bg-orange-50' }
-            };
+            try {
+                // Deteksi warna tema
+                const temaElement = document.querySelector('input[name="tema"]:checked');
+                const temaDipilih = temaElement ? temaElement.value : 'blue';
 
-            // Menyiapkan data yang akan dikirim ke Supabase
-            const dataBaru = {
-                title: document.getElementById('input-judul').value,
-                category: document.getElementById('input-kategori').value,
-                price: parseInt(document.getElementById('input-harga').value),
-                tag: document.getElementById('input-tag').value,
-                icon: document.getElementById('input-icon').value || 'fa-book',
-                warna: mappingWarna[temaDipilih].warna,
-                bg: mappingWarna[temaDipilih].bg
-            };
+                const mappingWarna = {
+                    blue: { warna: 'text-blue-500', bg: 'bg-blue-50' },
+                    red: { warna: 'text-red-500', bg: 'bg-red-50' },
+                    emerald: { warna: 'text-emerald-500', bg: 'bg-emerald-50' },
+                    purple: { warna: 'text-purple-500', bg: 'bg-purple-50' },
+                    orange: { warna: 'text-orange-500', bg: 'bg-orange-50' }
+                };
 
-            // Proses Insert ke Supabase
-            const { data, error } = await supabase.from('products').insert([dataBaru]);
+                // Susun data
+                const dataBaru = {
+                    title: document.getElementById('input-judul').value,
+                    category: document.getElementById('input-kategori').value,
+                    price: parseInt(document.getElementById('input-harga').value),
+                    tag: document.getElementById('input-tag').value,
+                    icon: document.getElementById('input-icon').value || 'fa-book',
+                    warna: mappingWarna[temaDipilih].warna,
+                    bg: mappingWarna[temaDipilih].bg
+                };
 
-            btn.innerHTML = '<i class="fas fa-save mr-2"></i> Simpan ke Database';
-            btn.disabled = false;
+                console.log("Mengirim data ke Supabase:", dataBaru);
 
-            if (error) {
-                showToast("❌ Gagal menyimpan data: " + error.message);
-            } else {
-                showToast("✅ Modul berhasil ditambahkan!");
-                document.getElementById('form-tambah').reset(); // Kosongkan form
-                loadData(); // Update tabel
+                // Eksekusi insert ke Supabase (ditambah .select() untuk verifikasi)
+                const { data, error } = await supabase.from('products').insert([dataBaru]).select();
+
+                if (error) {
+                    console.error("Error dari Supabase:", error);
+                    // Munculkan pop-up paksa agar errornya terlihat jelas!
+                    alert("Gagal menyimpan ke database!\nPesan Error: " + error.message);
+                    showToast("❌ Gagal: " + error.message);
+                } else {
+                    console.log("Berhasil tersimpan:", data);
+                    showToast("✅ Modul berhasil ditambahkan!");
+                    document.getElementById('form-tambah').reset(); // Kosongkan form
+                    loadData(); // Update tabel di sebelah kanan
+                }
+            } catch (err) {
+                console.error("Error Sistem:", err);
+                alert("Terjadi kesalahan pada sistem JavaScript:\n" + err.message);
+            } finally {
+                // Kembalikan tombol ke kondisi semula
+                btn.innerHTML = teksAsli;
+                btn.disabled = false;
             }
         }
 
