@@ -12,26 +12,27 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        .badge-pending { @apply bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase; }
+        .badge-lunas { @apply bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase; }
     </style>
 </head>
 <body>
 
-    <nav class="bg-slate-900 text-white min-h-screen w-64 fixed left-0 top-0 p-6 hidden md:block">
+    <nav class="bg-slate-900 text-white min-h-screen w-64 fixed left-0 top-0 p-6 hidden md:block z-50">
         <div class="flex items-center gap-3 mb-10">
             <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/50">
                 <i class="fas fa-user-shield"></i>
             </div>
             <h1 class="font-bold text-xl">Admin Panel</h1>
         </div>
-        
         <div class="space-y-2">
             <button onclick="switchTab('tab-produk', this)" class="tab-btn w-full text-left px-4 py-3 rounded-xl bg-blue-600 font-bold flex items-center gap-3 transition">
                 <i class="fas fa-box"></i> Manajemen Modul
             </button>
             <button onclick="switchTab('tab-log', this)" class="tab-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 font-bold flex items-center gap-3 transition">
-                <i class="fas fa-users"></i> Log Calon Pembeli
+                <i class="fas fa-users"></i> Log Pembeli
             </button>
-            <a href="index.html" target="_blank" class="block w-full text-left px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 font-bold flex items-center gap-3 transition">
+            <a href="index.html" class="block w-full text-left px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 font-bold flex items-center gap-3 transition">
                 <i class="fas fa-external-link-alt"></i> Lihat Website
             </a>
         </div>
@@ -41,92 +42,45 @@
         
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                <p class="text-slate-400 text-xs font-bold uppercase mb-2">Total Modul</p>
+                <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Total Modul</p>
                 <h3 id="stat-total" class="text-3xl font-black text-slate-800">0</h3>
             </div>
             <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                <p class="text-slate-400 text-xs font-bold uppercase mb-2">Log Calon Pembeli</p>
+                <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Total Transaksi</p>
                 <h3 id="stat-log" class="text-3xl font-black text-blue-600">0</h3>
             </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 border-l-4 border-l-emerald-500">
-                <p class="text-slate-400 text-xs font-bold uppercase mb-2">Status Sistem</p>
-                <h3 class="text-3xl font-black text-emerald-500 text-sm">Online & Sinkron</h3>
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                <p class="text-slate-400 text-[10px] font-bold uppercase mb-2">Sistem</p>
+                <h3 class="text-emerald-500 font-black">ONLINE</h3>
             </div>
         </div>
 
         <div id="tab-produk" class="tab-content active">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-1">
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 sticky top-10">
-                        <h2 class="font-bold text-lg mb-6 flex items-center gap-2">
-                            <i class="fas fa-plus-circle text-blue-600"></i> Tambah / Edit Modul
-                        </h2>
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                        <h2 class="font-bold mb-6">Tambah Modul</h2>
                         <form id="form-produk" class="space-y-4">
-                            <input type="hidden" id="edit-id">
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Judul Modul</label>
-                                <input type="text" id="judul" required class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
-                            </div>
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Harga Jual</label>
-                                    <input type="number" id="harga" required class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Harga Coret (Asli)</label>
-                                    <input type="number" id="asli" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none" placeholder="Opsional">
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Kategori</label>
-                                    <select id="kategori" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none">
-                                        <option value="UTBK">UTBK-SNBT</option>
-                                        <option value="CPNS">CPNS</option>
-                                        <option value="MANDIRI">MANDIRI</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Tag (Contoh: HOT)</label>
-                                    <input type="text" id="tag" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Pilih Warna Kartu</label>
-                                <div class="flex gap-2 py-2">
-                                    <label><input type="radio" name="tema" value="blue" checked class="peer hidden"><div class="w-8 h-8 rounded-full bg-blue-500 peer-checked:ring-2 ring-blue-900 cursor-pointer"></div></label>
-                                    <label><input type="radio" name="tema" value="orange" class="peer hidden"><div class="w-8 h-8 rounded-full bg-orange-500 peer-checked:ring-2 ring-orange-900 cursor-pointer"></div></label>
-                                    <label><input type="radio" name="tema" value="emerald" class="peer hidden"><div class="w-8 h-8 rounded-full bg-emerald-500 peer-checked:ring-2 ring-emerald-900 cursor-pointer"></div></label>
-                                    <label><input type="radio" name="tema" value="purple" class="peer hidden"><div class="w-8 h-8 rounded-full bg-purple-500 peer-checked:ring-2 ring-purple-900 cursor-pointer"></div></label>
-                                </div>
-                            </div>
-                            <button type="submit" id="btn-submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl hover:bg-blue-700 transition shadow-lg shadow-blue-200 active:scale-95">
-                                <i class="fas fa-save mr-2"></i> Simpan ke Database
-                            </button>
+                            <input type="text" id="judul" placeholder="Judul Modul" required class="w-full bg-slate-50 border p-3 rounded-xl outline-none">
+                            <input type="number" id="harga" placeholder="Harga Jual" required class="w-full bg-slate-50 border p-3 rounded-xl outline-none">
+                            <input type="number" id="asli" placeholder="Harga Asli (Untuk Coret)" class="w-full bg-slate-50 border p-3 rounded-xl outline-none">
+                            <select id="kategori" class="w-full bg-slate-50 border p-3 rounded-xl outline-none">
+                                <option value="UTBK">UTBK-SNBT</option>
+                                <option value="MATEMATIKA">MATEMATIKA</option>
+                            </select>
+                            <input type="text" id="tag" placeholder="Tag (HOTS/PROMO)" class="w-full bg-slate-50 border p-3 rounded-xl outline-none">
+                            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl">Simpan Modul</button>
                         </form>
                     </div>
                 </div>
-
                 <div class="lg:col-span-2">
-                    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-                            <h2 class="font-bold text-slate-800">Daftar Modul Anda</h2>
-                            <button onclick="loadData()" class="text-blue-600 hover:rotate-180 transition-all duration-500"><i class="fas fa-sync-alt"></i></button>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead class="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                    <tr>
-                                        <th class="p-4">Modul</th>
-                                        <th class="p-4">Harga</th>
-                                        <th class="p-4">Kategori</th>
-                                        <th class="p-4 text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tabel-produk" class="text-sm divide-y divide-slate-100">
-                                    </tbody>
-                            </table>
-                        </div>
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden text-sm">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 font-bold text-slate-400 uppercase text-[10px]">
+                                <tr><th class="p-4">Modul</th><th class="p-4">Harga</th><th class="p-4">Aksi</th></tr>
+                            </thead>
+                            <tbody id="tabel-produk" class="divide-y"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -134,139 +88,104 @@
 
         <div id="tab-log" class="tab-content">
             <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-                <div class="p-6 border-b border-slate-100">
-                    <h2 class="font-bold text-slate-800">Daftar Email Calon Pembeli (Log)</h2>
-                    <p class="text-xs text-slate-400">Data ini terekam saat siswa mengisi email di modal 'Beli' pada landing page.</p>
+                <div class="p-6 border-b">
+                    <h2 class="font-bold text-slate-800 tracking-tight">Log Transaksi Siswa</h2>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase">Klik pada status untuk mengubah (Pending/Lunas)</p>
                 </div>
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto text-sm">
                     <table class="w-full text-left">
-                        <thead class="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        <thead class="bg-slate-50 font-bold text-slate-400 uppercase text-[10px]">
                             <tr>
                                 <th class="p-4">Tanggal</th>
                                 <th class="p-4">Email Siswa</th>
-                                <th class="p-4">Produk Diminati</th>
-                                <th class="p-4">Aksi</th>
+                                <th class="p-4">Produk</th>
+                                <th class="p-4 text-center">Status</th>
+                                <th class="p-4 text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="tabel-log" class="text-sm divide-y divide-slate-100 font-medium">
-                            </tbody>
+                        <tbody id="tabel-log" class="divide-y font-medium text-slate-600"></tbody>
                     </table>
                 </div>
             </div>
         </div>
-
     </main>
 
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[2000] bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl transform translate-y-32 transition-transform duration-500">
-        <span id="toast-msg"></span>
-    </div>
-
     <script>
-        // CONFIG
         const supabaseUrl = 'https://qyibrftzgezfatvbcqem.supabase.co';
         const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
         const client = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // UI Logic
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('bg-blue-600', 'text-white');
-                b.classList.add('text-slate-400', 'hover:bg-slate-800');
-            });
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.replace('bg-blue-600', 'hover:bg-slate-800'));
             document.getElementById(tabId).classList.add('active');
-            btn.classList.add('bg-blue-600', 'text-white');
-            btn.classList.remove('text-slate-400', 'hover:bg-slate-800');
+            btn.classList.replace('hover:bg-slate-800', 'bg-blue-600');
         }
 
-        // DATABASE LOGIC
         async function loadData() {
             // Load Produk
-            const { data: produk, error: err1 } = await client.from('products').select('*').order('id', { ascending: false });
-            if (!err1) {
+            const { data: produk } = await client.from('products').select('*').order('id', { ascending: false });
+            if (produk) {
                 document.getElementById('stat-total').innerText = produk.length;
                 document.getElementById('tabel-produk').innerHTML = produk.map(p => `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-4">
-                            <p class="font-bold text-slate-800">${p.judul || p.title}</p>
-                            <span class="text-[10px] bg-blue-100 text-blue-600 px-2 rounded-full font-bold">${p.tag || '-'}</span>
-                        </td>
-                        <td class="p-4 font-bold text-blue-600">
-                            Rp ${(p.harga || p.price || 0).toLocaleString()}
-                            ${p.asli ? `<span class="block text-[10px] text-slate-400 line-through">Rp ${parseInt(p.asli).toLocaleString()}</span>` : ''}
-                        </td>
-                        <td class="p-4 text-xs font-bold text-slate-500 uppercase">${p.kategori || p.category}</td>
-                        <td class="p-4 text-center">
-                            <button onclick="hapus('${p.id}')" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash-alt"></i></button>
-                        </td>
-                    </tr>
-                `).join('');
+                    <tr>
+                        <td class="p-4 font-bold">${p.judul || p.title}</td>
+                        <td class="p-4">Rp ${p.harga.toLocaleString()}</td>
+                        <td class="p-4"><button onclick="hapus('${p.id}')" class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button></td>
+                    </tr>`).join('');
             }
 
-            // Load Logs
-            const { data: logs, error: err2 } = await client.from('log_pembeli').select('*').order('id', { ascending: false });
-            if (!err2) {
+            // Load Log Pembeli
+            const { data: logs } = await client.from('log_pembeli').select('*').order('id', { ascending: false });
+            if (logs) {
                 document.getElementById('stat-log').innerText = logs.length;
-                document.getElementById('tabel-log').innerHTML = logs.map(l => `
+                document.getElementById('tabel-log').innerHTML = logs.map(l => {
+                    const status = l.status || 'Pending';
+                    const badgeClass = status === 'Lunas' ? 'badge-lunas' : 'badge-pending';
+                    return `
                     <tr>
-                        <td class="p-4 text-slate-400 text-xs">${new Date(l.created_at).toLocaleDateString('id-ID')}</td>
-                        <td class="p-4 text-blue-600 font-bold">${l.email}</td>
-                        <td class="p-4">${l.produk_diminati}</td>
-                        <td class="p-4"><a href="mailto:${l.email}" class="text-xs bg-slate-100 p-2 rounded-lg hover:bg-blue-100 transition">Follow Up</a></td>
-                    </tr>
-                `).join('');
+                        <td class="p-4 text-xs opacity-60">${new Date(l.created_at).toLocaleDateString()}</td>
+                        <td class="p-4 font-bold text-blue-600">${l.email}</td>
+                        <td class="p-4 italic">${l.produk_diminati}</td>
+                        <td class="p-4 text-center">
+                            <button onclick="updateStatus('${l.id}', '${status}')" class="${badgeClass}">
+                                ${status}
+                            </button>
+                        </td>
+                        <td class="p-4 text-center">
+                            <a href="mailto:${l.email}" class="text-blue-500 hover:underline text-xs font-bold">Email</a>
+                        </td>
+                    </tr>`;
+                }).join('');
             }
         }
 
-        // Simpan Produk
+        async function updateStatus(id, currentStatus) {
+            const nextStatus = currentStatus === 'Pending' ? 'Lunas' : 'Pending';
+            const { error } = await client.from('log_pembeli').update({ status: nextStatus }).eq('id', id);
+            if(!error) loadData();
+        }
+
         document.getElementById('form-produk').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-
-            const tema = document.querySelector('input[name="tema"]:checked').value;
-            const mapping = {
-                blue: { w: 'text-blue-600', bg: 'bg-blue-50' },
-                orange: { w: 'text-orange-600', bg: 'bg-orange-50' },
-                emerald: { w: 'text-emerald-600', bg: 'bg-emerald-50' },
-                purple: { w: 'text-purple-600', bg: 'bg-purple-50' }
-            };
-
             const data = {
                 judul: document.getElementById('judul').value,
                 title: document.getElementById('judul').value,
                 harga: parseInt(document.getElementById('harga').value),
                 price: parseInt(document.getElementById('harga').value),
-                asli: document.getElementById('asli').value ? parseInt(document.getElementById('asli').value) : 0,
+                asli: parseInt(document.getElementById('asli').value) || 0,
                 kategori: document.getElementById('kategori').value,
                 category: document.getElementById('kategori').value,
                 tag: document.getElementById('tag').value,
-                warna: mapping[tema].w,
-                bg: mapping[tema].bg
+                warna: 'text-blue-600', bg: 'bg-blue-50', icon: 'fa-book'
             };
-
-            const { error } = await client.from('products').insert([data]);
-            if (error) alert("Error: " + error.message);
-            else {
-                showToast("✅ Berhasil disimpan!");
-                document.getElementById('form-produk').reset();
-                loadData();
-            }
-            btn.innerHTML = '<i class="fas fa-save mr-2"></i> Simpan ke Database';
+            await client.from('products').insert([data]);
+            loadData();
+            e.target.reset();
         });
 
         async function hapus(id) {
-            if (confirm("Hapus modul ini secara permanen?")) {
-                await client.from('products').delete().eq('id', id);
-                loadData();
-            }
-        }
-
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
-            t.classList.remove('translate-y-32');
-            setTimeout(() => t.classList.add('translate-y-32'), 3000);
+            if(confirm("Hapus?")) { await client.from('products').delete().eq('id', id); loadData(); }
         }
 
         window.onload = loadData;
