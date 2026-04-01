@@ -12,8 +12,22 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-        .sidebar-link { @apply flex items-center gap-3 px-5 py-3.5 rounded-2xl font-bold transition-all text-slate-400 hover:bg-slate-50 hover:text-blue-600; }
-        .sidebar-link.active { @apply bg-blue-600 text-white shadow-lg shadow-blue-200 hover:text-white hover:bg-blue-700; }
+        
+        /* Navigasi Sidebar */
+        .sidebar-link { 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+            padding: 0.875rem 1.25rem; 
+            border-radius: 1rem; 
+            font-weight: 700; 
+            color: #94a3b8; 
+            transition: all 0.3s ease;
+        }
+        .sidebar-link i { width: 1.25rem; text-align: center; font-size: 1.1rem; }
+        .sidebar-link:hover { background-color: #f1f5f9; color: #2563eb; }
+        .sidebar-link.active { background-color: #2563eb; color: #ffffff; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2); }
+        
         .badge-lunas { @apply bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase; }
         .badge-pending { @apply bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase; }
     </style>
@@ -21,49 +35,52 @@
 <body class="text-slate-800">
 
     <aside class="hidden lg:flex flex-col w-72 bg-white h-screen fixed left-0 top-0 border-r border-slate-100 z-50">
-        <div class="p-8 flex items-center gap-3">
-            <img src="LOGO.jpg" alt="Logo" class="h-10 w-auto rounded-lg shadow-sm">
-            <span class="text-xl font-black text-blue-700 uppercase tracking-tighter">Marsiajar</span>
+        <div class="p-8 mb-4">
+            <div class="flex items-center gap-3">
+                <img src="LOGO.jpg" alt="Logo" class="h-10 w-auto rounded-lg shadow-sm">
+                <span class="text-xl font-black text-blue-700 uppercase tracking-tighter">Marsiajar</span>
+            </div>
         </div>
 
-        <nav class="flex-1 px-4 space-y-1.5 mt-4">
-            <p class="px-5 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-2">Main Menu</p>
+        <nav class="flex-1 px-4 space-y-1">
+            <p class="px-5 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-3">Main Menu</p>
             
             <a href="#" class="sidebar-link active">
-                <i class="fas fa-grid-2 w-5"></i> Beranda
+                <i class="fas fa-th-large"></i> <span>Beranda</span>
             </a>
-            <a href="#my-modules-grid" class="sidebar-link">
-                <i class="fas fa-book-open w-5"></i> Modul Saya
+            <a href="#my-modules-grid-section" class="sidebar-link">
+                <i class="fas fa-book-reader"></i> <span>Modul Saya</span>
             </a>
             <a href="index.html#kategori" class="sidebar-link">
-                <i class="fas fa-shopping-bag w-5"></i> Katalog Modul
+                <i class="fas fa-shopping-bag"></i> <span>Katalog Modul</span>
             </a>
             
-            <div class="my-6 border-t border-slate-50 mx-4"></div>
-            <p class="px-5 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-2">Dukungan</p>
+            <div class="pt-8 pb-4">
+                <p class="px-5 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-3">Dukungan</p>
+            </div>
 
-            <a href="https://wa.me/6282277175018" target="_blank" class="sidebar-link text-emerald-600">
-                <i class="fab fa-whatsapp w-5 text-lg"></i> Tanya Tutor
+            <a href="https://wa.me/6282277175018" target="_blank" class="sidebar-link text-emerald-600 hover:bg-emerald-50">
+                <i class="fab fa-whatsapp"></i> <span>Tanya Tutor</span>
             </a>
             <a href="#" onclick="alert('Fitur pengaturan profil segera hadir!')" class="sidebar-link">
-                <i class="fas fa-user-cog w-5"></i> Pengaturan
+                <i class="fas fa-user-cog"></i> <span>Pengaturan</span>
             </a>
         </nav>
 
-        <div class="px-6 mb-6">
-            <div class="bg-slate-900 rounded-[2rem] p-5 text-white relative overflow-hidden">
-                <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1">Menuju UTBK 2026</p>
-                <h4 id="countdown" class="text-xl font-black">--- Hari</h4>
-                <div class="mt-3 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <div class="h-full bg-blue-500 w-1/3"></div>
+        <div class="px-6 mb-8">
+            <div class="bg-slate-900 rounded-[2rem] p-6 text-white relative overflow-hidden shadow-xl shadow-slate-200">
+                <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2">Menuju UTBK 2026</p>
+                <h4 id="countdown" class="text-2xl font-black italic">--- Hari</h4>
+                <div class="mt-4 h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                    <div class="h-full bg-blue-500 w-1/4"></div>
                 </div>
-                <i class="fas fa-rocket absolute -right-2 -bottom-2 text-4xl opacity-10 -rotate-12"></i>
+                <i class="fas fa-rocket absolute -right-3 -bottom-3 text-5xl opacity-10 -rotate-12"></i>
             </div>
         </div>
 
         <div class="p-6 border-t border-slate-50">
-            <button onclick="logout()" class="w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-bold text-red-500 hover:bg-red-50 transition-all">
-                <i class="fas fa-sign-out-alt"></i> Keluar Akun
+            <button onclick="logout()" class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl font-bold text-red-500 hover:bg-red-50 transition-all group">
+                <i class="fas fa-sign-out-alt transition-transform group-hover:-translate-x-1"></i> <span>Keluar Akun</span>
             </button>
         </div>
     </aside>
@@ -72,14 +89,14 @@
         
         <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
             <div>
-                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Halo, <span id="user-name" class="text-blue-600 uppercase">Siswa</span>! 👋</h1>
-                <p class="text-slate-500 font-medium mt-1 uppercase text-xs font-black">Panel Belajar Eksklusif</p>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight leading-tight">Halo, <span id="user-name" class="text-blue-600">Siswa</span>! 👋</h1>
+                <p class="text-slate-500 font-semibold mt-1 uppercase text-[10px] tracking-widest opacity-70">Panel Belajar Eksklusif</p>
             </div>
-            <div class="flex items-center gap-4 bg-white p-3 pr-8 rounded-3xl shadow-sm border border-slate-100">
+            <div class="flex items-center gap-4 bg-white p-3 pr-8 rounded-[2rem] shadow-sm border border-slate-100">
                 <div id="user-initial" class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black uppercase text-xl">M</div>
                 <div>
-                    <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Akun Terverifikasi</p>
-                    <p id="user-email" class="text-xs font-bold text-slate-400">email@siswa.com</p>
+                    <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest leading-none mb-1">Terverifikasi</p>
+                    <p id="user-email" class="text-xs font-bold text-slate-400 leading-none">email@siswa.com</p>
                 </div>
             </div>
         </header>
@@ -88,11 +105,11 @@
             <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-10 rounded-[3rem] text-white shadow-2xl shadow-blue-200 relative overflow-hidden">
                 <div class="relative z-10 flex items-center justify-between">
                     <div>
-                        <p class="text-blue-100 text-[10px] font-black uppercase tracking-[0.2em] mb-3 opacity-80">Modul Yang Kamu Miliki</p>
-                        <h3 id="stat-modul" class="text-6xl font-black tracking-tighter">0</h3>
+                        <p class="text-blue-100 text-[10px] font-black uppercase tracking-[0.2em] mb-4 opacity-80">Modul Yang Kamu Miliki</p>
+                        <h3 id="stat-modul" class="text-7xl font-black tracking-tighter leading-none">0</h3>
                     </div>
                     <div class="hidden sm:block text-right">
-                        <p class="text-white font-bold text-lg leading-tight italic">Terus Belajar,<br>Maretong Terus! 🚀</p>
+                        <p class="text-white font-black text-xl italic leading-tight">Terus Belajar,<br>Maretong Terus! 🚀</p>
                     </div>
                 </div>
                 <i class="fas fa-graduation-cap absolute -right-6 -bottom-6 text-[12rem] opacity-10 rotate-12"></i>
@@ -101,28 +118,34 @@
 
         <section id="my-modules-grid-section" class="mb-16">
             <h2 class="text-2xl font-black text-slate-900 mb-8 px-2 flex items-center gap-3">
-                <i class="fas fa-book-open text-blue-600"></i> Modul Saya
+                <i class="fas fa-book text-blue-600"></i> Modul Saya
             </h2>
             <div id="my-modules-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="col-span-full text-center py-20 text-slate-400">
+                    <i class="fas fa-spinner fa-spin text-2xl mb-4"></i>
+                    <p class="text-[10px] font-bold uppercase tracking-widest">Sinkronisasi materi...</p>
                 </div>
+            </div>
         </section>
 
         <section>
             <h2 class="text-2xl font-black text-slate-900 mb-8 px-2 flex items-center gap-3 text-blue-600">
-                <i class="fas fa-history text-blue-600"></i> Log Aktivitas Pembelian
+                <i class="fas fa-history"></i> Log Aktivitas Pembelian
             </h2>
             <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-slate-50 font-black text-slate-400 uppercase text-[10px] tracking-widest">
-                        <tr>
-                            <th class="p-6">Waktu</th>
-                            <th class="p-6">Produk</th>
-                            <th class="p-6 text-center">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="purchase-history" class="divide-y divide-slate-50 font-semibold text-slate-600">
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 font-black text-slate-400 uppercase text-[10px] tracking-widest">
+                            <tr>
+                                <th class="p-6">Waktu</th>
+                                <th class="p-6">Produk</th>
+                                <th class="p-6 text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="purchase-history" class="divide-y divide-slate-50 font-semibold text-slate-600">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
@@ -133,7 +156,6 @@
         const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
         const client = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // FITUR COUNTDOWN (ASUMSI UTBK 1 MEI 2026)
         function updateCountdown() {
             const target = new Date("May 1, 2026 00:00:00").getTime();
             const now = new Date().getTime();
@@ -168,15 +190,15 @@
                 if (error) throw error;
 
                 if (!data || data.length === 0) {
-                    historyTable.innerHTML = `<tr><td colspan="3" class="p-16 text-center text-slate-400 font-bold uppercase text-[10px] opacity-50">Tidak ada transaksi</td></tr>`;
-                    modulesGrid.innerHTML = `<div class="col-span-full text-center py-20 bg-white rounded-[3rem] border-2 border-dashed border-slate-100 text-slate-400 font-bold text-xs uppercase tracking-widest">Belum ada modul yang dibeli</div>`;
+                    historyTable.innerHTML = `<tr><td colspan="3" class="p-16 text-center text-slate-400 font-bold uppercase text-[10px] opacity-50 tracking-widest">Tidak ada riwayat transaksi</td></tr>`;
+                    modulesGrid.innerHTML = `<div class="col-span-full text-center py-24 bg-white rounded-[3rem] border-2 border-dashed border-slate-100 text-slate-400 font-bold text-[10px] uppercase tracking-widest">Belum ada modul yang dibeli</div>`;
                     return;
                 }
 
                 historyTable.innerHTML = data.map(item => `
                     <tr>
-                        <td class="p-6 text-xs font-bold text-slate-400">${new Date(item.created_at).toLocaleDateString()}</td>
-                        <td class="p-6 font-black text-slate-800">${item.produk_diminati}</td>
+                        <td class="p-6 text-xs font-bold text-slate-400">${new Date(item.created_at).toLocaleDateString('id-ID')}</td>
+                        <td class="p-6 font-black text-slate-800 uppercase text-xs">${item.produk_diminati}</td>
                         <td class="p-6 text-center"><span class="${item.status === 'Lunas' ? 'badge-lunas' : 'badge-pending'}">${item.status || 'Pending'}</span></td>
                     </tr>`).join('');
 
@@ -185,15 +207,15 @@
 
                 if (lunasModules.length > 0) {
                     modulesGrid.innerHTML = lunasModules.map(item => `
-                        <div class="bg-white p-8 rounded-[2.5rem] border-2 border-slate-50 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-6 hover:border-blue-500 transition-all">
+                        <div class="bg-white p-8 rounded-[2.5rem] border-2 border-slate-50 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-6 hover:border-blue-500 transition-all duration-300">
                             <div class="text-center sm:text-left">
-                                <p class="text-[10px] font-black text-blue-600 mb-2 uppercase">Akses Aktif</p>
-                                <h4 class="font-black text-xl text-slate-800 uppercase">${item.produk_diminati}</h4>
+                                <p class="text-[10px] font-black text-blue-600 mb-2 uppercase tracking-widest">Terverifikasi</p>
+                                <h4 class="font-black text-lg text-slate-800 uppercase leading-tight">${item.produk_diminati}</h4>
                             </div>
-                            <button onclick="alert('Tautan PDF dikirim ke email atau hubungi admin.')" class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black text-xs hover:bg-blue-600 transition-all uppercase shadow-xl">Akses Modul</button>
+                            <button onclick="alert('Link akses sedang diproses.')" class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black text-[10px] hover:bg-blue-600 transition-all uppercase tracking-[0.2em] shadow-xl shadow-slate-200">Akses Modul</button>
                         </div>`).join('');
                 } else {
-                    modulesGrid.innerHTML = `<div class="col-span-full bg-orange-50 p-12 rounded-[3rem] text-center text-orange-600 font-bold text-xs uppercase tracking-widest italic border-2 border-dashed border-orange-200">Pembayaran kamu sedang kami verifikasi...</div>`;
+                    modulesGrid.innerHTML = `<div class="col-span-full bg-orange-50 p-12 rounded-[3rem] text-center text-orange-600 font-bold text-[10px] uppercase tracking-widest border-2 border-dashed border-orange-200">Menunggu verifikasi pembayaran admin...</div>`;
                 }
             } catch (err) { console.error(err); }
         }
