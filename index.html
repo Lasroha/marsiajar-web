@@ -3,273 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin V2 - Marsiajar Maretong</title>
+    <title>Marsiajar Maretong - Solusi Lulus Ujian Digital</title>
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        :root {
+            scroll-behavior: smooth;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #f8fafc;
+        }
+
+        /* Glassmorphism Effect */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Hero Background Animation */
+        .hero-gradient {
+            background: linear-gradient(-45deg, #1e40af, #3b82f6, #6366f1, #4f46e5);
+            background-size: 400% 400%;
+            animation: gradientAnim 15s ease infinite;
+        }
+
+        @keyframes gradientAnim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Card Hover Effects */
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .modal-active { overflow: hidden; }
+        
+        /* Smooth Entrance Animation */
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body>
+<body class="text-slate-900">
 
-    <nav class="bg-slate-900 text-white min-h-screen w-64 fixed left-0 top-0 p-6 hidden md:block">
-        <div class="flex items-center gap-3 mb-10">
-            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/50">
-                <i class="fas fa-user-shield"></i>
+    <nav class="glass-nav border-b border-slate-200 sticky top-0 z-[500] shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="LOGO.jpg" alt="Logo" class="h-10 w-auto rounded-lg shadow-sm">
+                <span class="text-2xl font-extrabold bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent uppercase tracking-tighter">Marsiajar</span>
             </div>
-            <h1 class="font-bold text-xl">Admin Panel</h1>
-        </div>
-        
-        <div class="space-y-2">
-            <button onclick="switchTab('tab-produk', this)" class="tab-btn w-full text-left px-4 py-3 rounded-xl bg-blue-600 font-bold flex items-center gap-3 transition">
-                <i class="fas fa-box"></i> Manajemen Modul
-            </button>
-            <button onclick="switchTab('tab-log', this)" class="tab-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 font-bold flex items-center gap-3 transition">
-                <i class="fas fa-users"></i> Log Calon Pembeli
-            </button>
-            <a href="index.html" target="_blank" class="block w-full text-left px-4 py-3 rounded-xl hover:bg-slate-800 text-slate-400 font-bold flex items-center gap-3 transition">
-                <i class="fas fa-external-link-alt"></i> Lihat Website
-            </a>
+            
+            <div class="hidden md:flex gap-10 font-bold text-sm text-slate-600">
+                <a href="#beranda" class="hover:text-blue-600 transition-colors">Beranda</a>
+                <a href="#kategori" class="hover:text-blue-600 transition-colors">E-Book</a>
+                <a href="#testimoni" class="hover:text-blue-600 transition-colors">Testimoni</a>
+            </div>
+
+            <div class="flex gap-4">
+                <button onclick="bukaAuth()" class="hidden sm:block text-sm font-bold text-blue-600 px-4 hover:bg-blue-50 rounded-xl transition-all">Masuk</button>
+                <button onclick="bukaAuth()" class="bg-blue-600 text-white text-sm font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-blue-200 hover:bg-blue-700 hover:shadow-blue-300 transition-all active:scale-95">Daftar</button>
+            </div>
         </div>
     </nav>
 
-    <main class="md:ml-64 p-4 md:p-10">
+    <header id="beranda" class="hero-gradient py-28 px-4 text-center relative overflow-hidden">
+        <div class="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-40 h-40 bg-indigo-400/20 rounded-full blur-3xl"></div>
+
+        <div class="max-w-4xl mx-auto relative z-10 fade-in-up">
+            <span class="inline-block py-1.5 px-4 rounded-full bg-white/20 text-white text-xs font-bold mb-6 tracking-widest uppercase backdrop-blur-md border border-white/30">🚀 Update SNBT & CPNS 2026</span>
+            <h1 class="text-4xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
+                Lolos Kampus Impian dengan <br>
+                <span class="text-orange-400 italic underline decoration-wavy decoration-white/30">Latihan Tepat</span>
+            </h1>
+            <p class="text-blue-100 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
+                Satu-satunya platform modul digital yang disusun oleh praktisi berpengalaman berdasarkan kisi-kisi paling akurat.
+            </p>
+            <div class="flex justify-center gap-4">
+                <a href="#kategori" class="bg-white text-blue-700 px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:bg-orange-400 hover:text-white transition-all transform hover:scale-105">Mulai Belajar Sekarang</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="max-w-7xl mx-auto px-4 -mt-12 relative z-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex items-center gap-5">
+                <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-2xl shrink-0"><i class="fas fa-file-invoice"></i></div>
+                <div><h4 class="font-bold text-slate-800">500+ Modul</h4><p class="text-sm text-slate-500">Materi paling lengkap</p></div>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex items-center gap-5">
+                <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-2xl shrink-0"><i class="fas fa-bolt"></i></div>
+                <div><h4 class="font-bold text-slate-800">Akses Instan</h4><p class="text-sm text-slate-500">Bayar langsung download</p></div>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex items-center gap-5">
+                <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 text-2xl shrink-0"><i class="fas fa-user-check"></i></div>
+                <div><h4 class="font-bold text-slate-800">Terpercaya</h4><p class="text-sm text-slate-500">15.000+ Alumni Sukses</p></div>
+            </div>
+        </div>
+    </section>
+
+    <main id="kategori" class="max-w-7xl mx-auto px-4 py-24">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Katalog Modul Unggulan</h2>
+            <p class="text-slate-500 text-lg">Investasi terbaik untuk masa depan pendidikanmu</p>
+            <div class="w-24 h-1.5 bg-blue-600 mx-auto mt-4 rounded-full"></div>
+        </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                <p class="text-slate-400 text-xs font-bold uppercase mb-2">Total Modul</p>
-                <h3 id="stat-total" class="text-3xl font-black text-slate-800">0</h3>
-            </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                <p class="text-slate-400 text-xs font-bold uppercase mb-2">Log Calon Pembeli</p>
-                <h3 id="stat-log" class="text-3xl font-black text-blue-600">0</h3>
-            </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 border-l-4 border-l-emerald-500">
-                <p class="text-slate-400 text-xs font-bold uppercase mb-2">Status Sistem</p>
-                <h3 class="text-3xl font-black text-emerald-500 text-sm">Online & Sinkron</h3>
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div id="loading-state" class="col-span-full text-center py-20">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-600 mb-4"></div>
+                <p class="text-slate-500 font-bold animate-pulse">Menghubungkan ke Pusat Data...</p>
             </div>
         </div>
-
-        <div id="tab-produk" class="tab-content active">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-1">
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 sticky top-10">
-                        <h2 class="font-bold text-lg mb-6 flex items-center gap-2">
-                            <i class="fas fa-plus-circle text-blue-600"></i> Tambah / Edit Modul
-                        </h2>
-                        <form id="form-produk" class="space-y-4">
-                            <input type="hidden" id="edit-id">
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Judul Modul</label>
-                                <input type="text" id="judul" required class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
-                            </div>
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Harga Jual</label>
-                                    <input type="number" id="harga" required class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Harga Coret (Asli)</label>
-                                    <input type="number" id="asli" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none" placeholder="Opsional">
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Kategori</label>
-                                    <select id="kategori" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none">
-                                        <option value="UTBK">UTBK-SNBT</option>
-                                        <option value="CPNS">CPNS</option>
-                                        <option value="MANDIRI">MANDIRI</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Tag (Contoh: HOT)</label>
-                                    <input type="text" id="tag" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl outline-none">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Pilih Warna Kartu</label>
-                                <div class="flex gap-2 py-2">
-                                    <label><input type="radio" name="tema" value="blue" checked class="peer hidden"><div class="w-8 h-8 rounded-full bg-blue-500 peer-checked:ring-2 ring-blue-900 cursor-pointer"></div></label>
-                                    <label><input type="radio" name="tema" value="orange" class="peer hidden"><div class="w-8 h-8 rounded-full bg-orange-500 peer-checked:ring-2 ring-orange-900 cursor-pointer"></div></label>
-                                    <label><input type="radio" name="tema" value="emerald" class="peer hidden"><div class="w-8 h-8 rounded-full bg-emerald-500 peer-checked:ring-2 ring-emerald-900 cursor-pointer"></div></label>
-                                    <label><input type="radio" name="tema" value="purple" class="peer hidden"><div class="w-8 h-8 rounded-full bg-purple-500 peer-checked:ring-2 ring-purple-900 cursor-pointer"></div></label>
-                                </div>
-                            </div>
-                            <button type="submit" id="btn-submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl hover:bg-blue-700 transition shadow-lg shadow-blue-200 active:scale-95">
-                                <i class="fas fa-save mr-2"></i> Simpan ke Database
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-2">
-                    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-                        <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-                            <h2 class="font-bold text-slate-800">Daftar Modul Anda</h2>
-                            <button onclick="loadData()" class="text-blue-600 hover:rotate-180 transition-all duration-500"><i class="fas fa-sync-alt"></i></button>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead class="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                    <tr>
-                                        <th class="p-4">Modul</th>
-                                        <th class="p-4">Harga</th>
-                                        <th class="p-4">Kategori</th>
-                                        <th class="p-4 text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tabel-produk" class="text-sm divide-y divide-slate-100">
-                                    </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab-log" class="tab-content">
-            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-                <div class="p-6 border-b border-slate-100">
-                    <h2 class="font-bold text-slate-800">Daftar Email Calon Pembeli (Log)</h2>
-                    <p class="text-xs text-slate-400">Data ini terekam saat siswa mengisi email di modal 'Beli' pada landing page.</p>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead class="bg-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                            <tr>
-                                <th class="p-4">Tanggal</th>
-                                <th class="p-4">Email Siswa</th>
-                                <th class="p-4">Produk Diminati</th>
-                                <th class="p-4">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabel-log" class="text-sm divide-y divide-slate-100 font-medium">
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
     </main>
 
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[2000] bg-slate-800 text-white px-6 py-3 rounded-full shadow-2xl transform translate-y-32 transition-transform duration-500">
-        <span id="toast-msg"></span>
+    <div id="payment-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[1000] flex items-center justify-center p-4 transition-all duration-500">
+        <div class="bg-white rounded-[2rem] max-w-md w-full overflow-hidden shadow-2xl transform transition-all duration-300">
+            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 text-white relative">
+                <button onclick="tutupModal()" class="absolute top-4 right-4 text-white/70 hover:text-white text-2xl">&times;</button>
+                <h2 id="modal-item-name" class="text-2xl font-bold mb-1"></h2>
+                <p class="text-blue-100 text-sm">Konfirmasi pembelian paket belajar</p>
+            </div>
+            
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-8 bg-slate-50 p-4 rounded-2xl">
+                    <span class="text-slate-500 font-bold uppercase text-xs tracking-widest">Total Bayar:</span>
+                    <span id="modal-item-price" class="text-2xl font-black text-blue-600"></span>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">Email Pengiriman (Wajib)</label>
+                        <input type="email" id="buyer-email" placeholder="nama@email.com" 
+                               class="w-full border-2 border-slate-100 p-4 rounded-2xl focus:border-blue-500 outline-none transition-all focus:bg-white bg-slate-50">
+                    </div>
+                    
+                    <button onclick="prosesBayar()" class="w-full bg-orange-500 text-white font-bold py-5 rounded-2xl shadow-xl shadow-orange-200 hover:bg-orange-600 transition-all active:scale-95 text-lg">
+                        Bayar Sekarang <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <p class="text-center text-[11px] text-slate-400 italic leading-relaxed">
+                        Link akses file PDF akan dikirim otomatis ke email Anda <br>setelah pembayaran berhasil divalidasi.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[2000] bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl transform translate-y-32 transition-transform duration-500 flex items-center gap-3">
+        <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-check"></i></div>
+        <span id="toast-msg" class="font-bold"></span>
+    </div>
+
+    <footer class="bg-slate-950 text-slate-400 py-20 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="flex justify-center items-center gap-3 mb-8">
+                <img src="LOGO.jpg" alt="Logo" class="h-10 w-auto opacity-80">
+                <span class="text-white text-2xl font-black tracking-tighter uppercase">Marsiajar</span>
+            </div>
+            <p class="max-w-lg mx-auto mb-10 text-sm leading-relaxed">
+                Membantu ribuan siswa Indonesia meraih mimpi masuk Perguruan Tinggi Negeri dan seleksi CPNS melalui materi yang terkurasi secara profesional.
+            </p>
+            <div class="flex justify-center gap-6 mb-12">
+                <a href="#" class="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all"><i class="fab fa-instagram text-xl"></i></a>
+                <a href="#" class="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all"><i class="fab fa-whatsapp text-xl"></i></a>
+                <a href="#" class="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all"><i class="fab fa-tiktok text-xl"></i></a>
+            </div>
+            <div class="pt-10 border-t border-slate-900 text-xs">
+                <p>&copy; 2026 Marsiajar Maretong. Dibuat dengan ❤️ untuk Pendidikan Indonesia.</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        // CONFIG
-        const supabaseUrl = 'https://qyibrftzgezfatvbcqem.supabase.co';
-        const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
-        const client = supabase.createClient(supabaseUrl, supabaseKey);
+        let mySupabase;
 
-        // UI Logic
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('bg-blue-600', 'text-white');
-                b.classList.add('text-slate-400', 'hover:bg-slate-800');
-            });
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('bg-blue-600', 'text-white');
-            btn.classList.remove('text-slate-400', 'hover:bg-slate-800');
-        }
-
-        // DATABASE LOGIC
-        async function loadData() {
-            // Load Produk
-            const { data: produk, error: err1 } = await client.from('products').select('*').order('id', { ascending: false });
-            if (!err1) {
-                document.getElementById('stat-total').innerText = produk.length;
-                document.getElementById('tabel-produk').innerHTML = produk.map(p => `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-4">
-                            <p class="font-bold text-slate-800">${p.judul || p.title}</p>
-                            <span class="text-[10px] bg-blue-100 text-blue-600 px-2 rounded-full font-bold">${p.tag || '-'}</span>
-                        </td>
-                        <td class="p-4 font-bold text-blue-600">
-                            Rp ${(p.harga || p.price || 0).toLocaleString()}
-                            ${p.asli ? `<span class="block text-[10px] text-slate-400 line-through">Rp ${parseInt(p.asli).toLocaleString()}</span>` : ''}
-                        </td>
-                        <td class="p-4 text-xs font-bold text-slate-500 uppercase">${p.kategori || p.category}</td>
-                        <td class="p-4 text-center">
-                            <button onclick="hapus('${p.id}')" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash-alt"></i></button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-
-            // Load Logs
-            const { data: logs, error: err2 } = await client.from('log_pembeli').select('*').order('id', { ascending: false });
-            if (!err2) {
-                document.getElementById('stat-log').innerText = logs.length;
-                document.getElementById('tabel-log').innerHTML = logs.map(l => `
-                    <tr>
-                        <td class="p-4 text-slate-400 text-xs">${new Date(l.created_at).toLocaleDateString('id-ID')}</td>
-                        <td class="p-4 text-blue-600 font-bold">${l.email}</td>
-                        <td class="p-4">${l.produk_diminati}</td>
-                        <td class="p-4"><a href="mailto:${l.email}" class="text-xs bg-slate-100 p-2 rounded-lg hover:bg-blue-100 transition">Follow Up</a></td>
-                    </tr>
-                `).join('');
+        function initApp() {
+            const supabaseUrl = 'https://qyibrftzgezfatvbcqem.supabase.co';
+            const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
+            
+            try {
+                mySupabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+                getProducts();
+            } catch (e) {
+                console.error(e);
             }
         }
 
-        // Simpan Produk
-        document.getElementById('form-produk').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+        async function getProducts() {
+            const grid = document.getElementById('product-grid');
+            try {
+                const { data, error } = await mySupabase.from('products').select('*').order('id', { ascending: false });
+                if (error) throw error;
 
-            const tema = document.querySelector('input[name="tema"]:checked').value;
-            const mapping = {
-                blue: { w: 'text-blue-600', bg: 'bg-blue-50' },
-                orange: { w: 'text-orange-600', bg: 'bg-orange-50' },
-                emerald: { w: 'text-emerald-600', bg: 'bg-emerald-50' },
-                purple: { w: 'text-purple-600', bg: 'bg-purple-50' }
-            };
+                if (!data || data.length === 0) {
+                    grid.innerHTML = '<p class="col-span-full text-center py-20 text-slate-400 font-bold border-2 border-dashed rounded-3xl">Belum ada modul yang tersedia.</p>';
+                    return;
+                }
 
-            const data = {
-                judul: document.getElementById('judul').value,
-                title: document.getElementById('judul').value,
-                harga: parseInt(document.getElementById('harga').value),
-                price: parseInt(document.getElementById('harga').value),
-                asli: document.getElementById('asli').value ? parseInt(document.getElementById('asli').value) : 0,
-                kategori: document.getElementById('kategori').value,
-                category: document.getElementById('kategori').value,
-                tag: document.getElementById('tag').value,
-                warna: mapping[tema].w,
-                bg: mapping[tema].bg
-            };
+                grid.innerHTML = data.map(item => {
+                    const jdl = item.judul || item.title || 'Produk';
+                    const hrg = item.harga || item.price || 0;
+                    const kat = item.kategori || item.category || 'Modul';
+                    const icon = item.icon || 'fa-book';
+                    const color = item.warna || 'text-blue-500';
+                    const bg = item.bg || 'bg-blue-50';
+                    const label = item.tag || '';
 
-            const { error } = await client.from('products').insert([data]);
-            if (error) alert("Error: " + error.message);
-            else {
-                showToast("✅ Berhasil disimpan!");
-                document.getElementById('form-produk').reset();
-                loadData();
+                    return `
+                        <div class="product-card bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 flex flex-col relative overflow-hidden">
+                            ${label ? `<span class="absolute top-5 right-5 bg-orange-100 text-orange-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">${label}</span>` : ''}
+                            
+                            <div class="w-16 h-16 ${bg} rounded-2xl flex items-center justify-center mb-8">
+                                <i class="fas ${icon} ${color} text-3xl"></i>
+                            </div>
+                            
+                            <div class="flex-1">
+                                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">${kat}</span>
+                                <h3 class="text-2xl font-bold text-slate-800 mt-2 leading-tight">${jdl}</h3>
+                            </div>
+                            
+                            <div class="mt-10 pt-8 border-t border-slate-50 flex items-end justify-between">
+                                <div>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Investasi</p>
+                                    <p class="text-2xl font-black text-blue-600 leading-none">Rp ${hrg.toLocaleString('id-ID')}</p>
+                                </div>
+                                <button onclick="bukaPesan('${jdl}', ${hrg})" class="bg-slate-900 text-white w-12 h-12 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-all shadow-lg hover:rotate-12">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (err) {
+                grid.innerHTML = `<p class="col-span-full text-center text-red-500">Error Database: ${err.message}</p>`;
             }
-            btn.innerHTML = '<i class="fas fa-save mr-2"></i> Simpan ke Database';
-        });
+        }
 
-        async function hapus(id) {
-            if (confirm("Hapus modul ini secara permanen?")) {
-                await client.from('products').delete().eq('id', id);
-                loadData();
-            }
+        function bukaPesan(nama, harga) {
+            document.getElementById('modal-item-name').innerText = nama;
+            document.getElementById('modal-item-price').innerText = "Rp " + harga.toLocaleString('id-ID');
+            document.getElementById('payment-modal').classList.remove('hidden');
+            document.body.classList.add('modal-active');
+        }
+
+        function tutupModal() {
+            document.getElementById('payment-modal').classList.add('hidden');
+            document.body.classList.remove('modal-active');
+        }
+
+        function prosesBayar() {
+            const email = document.getElementById('buyer-email').value;
+            if(!email.includes('@')) return alert("Mohon masukkan email yang valid!");
+            tutupModal();
+            showToast("Sukses! Instruksi terkirim ke " + email);
         }
 
         function showToast(msg) {
             const t = document.getElementById('toast');
             document.getElementById('toast-msg').innerText = msg;
             t.classList.remove('translate-y-32');
-            setTimeout(() => t.classList.add('translate-y-32'), 3000);
+            setTimeout(() => t.classList.add('translate-y-32'), 5000);
         }
 
-        window.onload = loadData;
+        function bukaAuth() {
+            alert("Fitur Login sedang dipersiapkan. Untuk saat ini Anda bisa langsung membeli modul di bawah.");
+        }
+
+        window.onload = initApp;
     </script>
 </body>
 </html>
