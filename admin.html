@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Marsiajar Maretong</title>
     
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -33,7 +33,7 @@
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 sticky top-24">
                 <h2 class="text-xl font-bold mb-6 border-b pb-3">Tambah Modul Baru</h2>
                 
-                <form id="form-tambah" onsubmit="tambahProduk(event)" class="space-y-4">
+                <form id="form-tambah" class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-500 mb-1">Judul Modul <span class="text-red-500">*</span></label>
                         <input type="text" id="input-judul" required placeholder="Contoh: Try Out SNBT Premium" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-sm">
@@ -103,7 +103,7 @@
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                 <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                     <h2 class="text-xl font-bold text-slate-800">Daftar Modul Saat Ini</h2>
-                    <button onclick="loadData()" class="text-sm bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-lg hover:bg-slate-100 transition">
+                    <button onclick="loadData()" class="text-sm bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-lg hover:bg-slate-100 transition shadow-sm active:scale-95">
                         <i class="fas fa-sync-alt mr-1"></i> Refresh
                     </button>
                 </div>
@@ -119,12 +119,7 @@
                             </tr>
                         </thead>
                         <tbody id="tabel-body" class="divide-y divide-slate-100 text-sm">
-                            <tr>
-                                <td colspan="4" class="p-8 text-center text-slate-400">
-                                    <i class="fas fa-circle-notch fa-spin text-2xl mb-2"></i><br>Memuat data...
-                                </td>
-                            </tr>
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
@@ -137,72 +132,90 @@
     </div>
 
     <script>
+        let supabase;
+        const tbody = document.getElementById('tabel-body');
+
         // ==========================================
-        // 1. KONFIGURASI SUPABASE
+        // 1. INISIALISASI DATABASE ANTI-CRASH
         // ==========================================
-        // GANTI DENGAN URL DAN KEY ANDA SENDIRI:
-        const supabaseUrl = 'https://qyibrftzgezfatvbcqem.supabase.co';
-        const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        function initDatabase() {
+            try {
+                const supabaseUrl = 'https://qyibrftzgezfatvbcqem.supabase.co';
+                const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
+                
+                if (!window.supabase) {
+                    throw new Error("Library Supabase gagal dimuat dari CDN. Cek koneksi internet Anda.");
+                }
+                
+                supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+                console.log("Supabase berhasil diinisialisasi!");
+                loadData(); // Langsung load data jika sukses
+            } catch (error) {
+                console.error(error);
+                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-red-500 font-bold bg-red-50">
+                    <i class="fas fa-exclamation-triangle text-2xl mb-2"></i><br>Sistem Gagal Terhubung ke Database!<br><span class="text-xs font-normal mt-2 block">${error.message}</span>
+                </td></tr>`;
+                showToast("❌ Gagal inisialisasi Database.");
+            }
+        }
 
         // ==========================================
         // 2. MENGAMBIL DATA (READ)
         // ==========================================
         async function loadData() {
-            const tbody = document.getElementById('tabel-body');
-            tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-400"><i class="fas fa-spinner fa-spin text-xl mb-2"></i><br>Sedang mengambil data dari server...</td></tr>';
-            
-            // Ambil data, urutkan dari ID terbesar (terbaru)
-            const { data, error } = await supabase.from('products').select('*').order('id', { ascending: false });
-            
-            if (error) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-red-500 font-bold">Gagal memuat data: ${error.message}</td></tr>`;
-                return;
-            }
+            if (!supabase) return;
 
-            if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-400">Belum ada produk di database. Silakan tambah produk baru.</td></tr>';
-                return;
-            }
+            tbody.innerHTML = '<tr><td colspan="4" class="p-10 text-center text-blue-500"><i class="fas fa-circle-notch fa-spin text-3xl mb-3"></i><br><span class="font-bold">Menghubungkan ke Supabase...</span></td></tr>';
+            
+            try {
+                const { data, error } = await supabase.from('products').select('*').order('id', { ascending: false });
+                
+                if (error) throw error;
 
-            tbody.innerHTML = data.map(item => `
-                <tr class="hover:bg-slate-50 transition-colors">
-                    <td class="p-4 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg ${item.bg || 'bg-slate-100'} flex items-center justify-center shrink-0">
-                            <i class="fas ${item.icon || 'fa-book'} ${item.warna || 'text-slate-500'}"></i>
-                        </div>
-                        <div>
-                            <p class="font-bold text-slate-800">${item.title || item.judul}</p>
-                            ${item.tag ? `<span class="text-[9px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold">${item.tag}</span>` : ''}
-                        </div>
-                    </td>
-                    <td class="p-4 text-slate-600 uppercase text-xs font-bold">${item.category || item.kategori}</td>
-                    <td class="p-4 font-bold text-blue-600">Rp ${(item.price || item.harga).toLocaleString('id-ID')}</td>
-                    <td class="p-4 text-center">
-                        <button onclick="hapusProduk('${item.id}', '${item.title || item.judul}')" class="w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-colors" title="Hapus Produk">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-400 font-medium">Belum ada modul di database. Silakan isi form di samping.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = data.map(item => `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="p-4 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg ${item.bg || 'bg-slate-100'} flex items-center justify-center shrink-0 shadow-sm">
+                                <i class="fas ${item.icon || 'fa-book'} ${item.warna || 'text-slate-500'}"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-800">${item.title || item.judul}</p>
+                                ${item.tag ? `<span class="text-[9px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold">${item.tag}</span>` : ''}
+                            </div>
+                        </td>
+                        <td class="p-4 text-slate-600 uppercase text-xs font-bold tracking-wider">${item.category || item.kategori}</td>
+                        <td class="p-4 font-black text-blue-600">Rp ${(item.price || item.harga).toLocaleString('id-ID')}</td>
+                        <td class="p-4 text-center">
+                            <button onclick="hapusProduk('${item.id}', '${item.title || item.judul}')" class="w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-colors shadow-sm" title="Hapus Permanen">
+                                <i class="fas fa-trash-alt text-xs"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-red-500 font-bold"><i class="fas fa-times-circle text-2xl mb-2"></i><br>Gagal memuat data dari Supabase.<br><span class="text-xs font-normal">${err.message}</span></td></tr>`;
+            }
         }
 
         // ==========================================
-        // 3. MENAMBAH DATA (CREATE) - VERSI REVISI
+        // 3. MENAMBAH DATA (CREATE)
         // ==========================================
-        async function tambahProduk(event) {
-            event.preventDefault(); // Mencegah halaman refresh
-            
+        async function tambahProduk() {
+            if (!supabase) return alert("Database belum terhubung!");
+
             const btn = document.getElementById('btn-submit');
             const teksAsli = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Menyimpan...';
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Menyimpan...';
             btn.disabled = true;
 
             try {
-                // Deteksi warna tema
-                const temaElement = document.querySelector('input[name="tema"]:checked');
-                const temaDipilih = temaElement ? temaElement.value : 'blue';
-
+                // Pemetaan Warna Tailwind
+                const temaDipilih = document.querySelector('input[name="tema"]:checked').value;
                 const mappingWarna = {
                     blue: { warna: 'text-blue-500', bg: 'bg-blue-50' },
                     red: { warna: 'text-red-500', bg: 'bg-red-50' },
@@ -211,7 +224,6 @@
                     orange: { warna: 'text-orange-500', bg: 'bg-orange-50' }
                 };
 
-                // Susun data
                 const dataBaru = {
                     title: document.getElementById('input-judul').value,
                     category: document.getElementById('input-kategori').value,
@@ -222,27 +234,19 @@
                     bg: mappingWarna[temaDipilih].bg
                 };
 
-                console.log("Mengirim data ke Supabase:", dataBaru);
+                // Kirim data
+                const { error } = await supabase.from('products').insert([dataBaru]);
 
-                // Eksekusi insert ke Supabase (ditambah .select() untuk verifikasi)
-                const { data, error } = await supabase.from('products').insert([dataBaru]).select();
+                if (error) throw error;
 
-                if (error) {
-                    console.error("Error dari Supabase:", error);
-                    // Munculkan pop-up paksa agar errornya terlihat jelas!
-                    alert("Gagal menyimpan ke database!\nPesan Error: " + error.message);
-                    showToast("❌ Gagal: " + error.message);
-                } else {
-                    console.log("Berhasil tersimpan:", data);
-                    showToast("✅ Modul berhasil ditambahkan!");
-                    document.getElementById('form-tambah').reset(); // Kosongkan form
-                    loadData(); // Update tabel di sebelah kanan
-                }
+                showToast("✅ Modul berhasil disimpan ke Supabase!");
+                document.getElementById('form-tambah').reset();
+                loadData(); // Segarkan tabel secara otomatis
+
             } catch (err) {
-                console.error("Error Sistem:", err);
-                alert("Terjadi kesalahan pada sistem JavaScript:\n" + err.message);
+                alert("GAGAL MENYIMPAN!\nPesan Error dari Database:\n" + err.message + "\n\nPastikan gembok RLS Supabase sudah terbuka.");
+                showToast("❌ Gagal menyimpan data.");
             } finally {
-                // Kembalikan tombol ke kondisi semula
                 btn.innerHTML = teksAsli;
                 btn.disabled = false;
             }
@@ -252,37 +256,44 @@
         // 4. MENGHAPUS DATA (DELETE)
         // ==========================================
         async function hapusProduk(id, namaProduk) {
-            // Konfirmasi sebelum menghapus
-            if(confirm(`Apakah Anda yakin ingin menghapus modul "${namaProduk}" secara permanen?`)) {
-                
+            if(confirm(`Yakin ingin MENGHAPUS PERMANEN modul:\n"${namaProduk}"?`)) {
                 showToast("⏳ Sedang menghapus...");
-                
-                const { error } = await supabase.from('products').delete().eq('id', id);
-                
-                if(error) {
-                    showToast("❌ Gagal menghapus data.");
-                } else {
-                    showToast("✅ Modul berhasil dihapus!");
-                    loadData(); // Update tabel setelah dihapus
+                try {
+                    const { error } = await supabase.from('products').delete().eq('id', id);
+                    if(error) throw error;
+                    
+                    showToast("✅ Modul dihapus!");
+                    loadData();
+                } catch (err) {
+                    alert("Gagal menghapus data: " + err.message);
                 }
             }
         }
 
         // ==========================================
-        // 5. UTILITAS NOTIFIKASI
+        // 5. EVENT LISTENER ANTI-REFRESH
         // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ini menjamin halaman tidak akan PERNAH refresh saat tombol submit diklik
+            const form = document.getElementById('form-tambah');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault(); // Kunci utama mencegah refresh
+                    tambahProduk();
+                });
+            }
+
+            // Jalankan inisialisasi database
+            initDatabase();
+        });
+
+        // Utils
         function showToast(msg) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-msg').innerText = msg;
             toast.classList.remove('translate-y-32');
-            setTimeout(() => {
-                toast.classList.add('translate-y-32');
-            }, 3000);
+            setTimeout(() => toast.classList.add('translate-y-32'), 3000);
         }
-
-        // INIT: Muat data tabel saat halaman pertama dibuka
-        window.onload = loadData;
-
     </script>
 </body>
 </html>
