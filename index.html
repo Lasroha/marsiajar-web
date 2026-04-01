@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marsiajar Maretong - Solusi Lulus Ujian Digital</title>
+    <title>Marsiajar Maretong - Spesialis Modul UTBK & Matematika</title>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,57 +11,13 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        
-        :root {
-            scroll-behavior: smooth;
-        }
-
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #f8fafc;
-        }
-
-        /* Glassmorphism Effect */
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
-        /* Hero Background Animation */
-        .hero-gradient {
-            background: linear-gradient(-45deg, #1e40af, #3b82f6, #6366f1, #4f46e5);
-            background-size: 400% 400%;
-            animation: gradientAnim 15s ease infinite;
-        }
-
-        @keyframes gradientAnim {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Card Hover Effects */
-        .product-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .hero-gradient { background: linear-gradient(-45deg, #1e40af, #3b82f6, #6366f1, #4f46e5); background-size: 400% 400%; animation: gradientAnim 15s ease infinite; }
+        @keyframes gradientAnim { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .product-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         .modal-active { overflow: hidden; }
-        
-        /* Smooth Entrance Animation */
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body class="text-slate-900">
@@ -69,198 +25,137 @@
     <nav class="glass-nav border-b border-slate-200 sticky top-0 z-[500] shadow-sm">
         <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="LOGO.jpg" alt="Logo" class="h-10 w-auto rounded-lg shadow-sm">
-                <span class="text-2xl font-extrabold bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent uppercase tracking-tighter">Marsiajar</span>
+                <img src="LOGO.jpg" alt="Logo" class="h-10 w-auto rounded-lg">
+                <span class="text-2xl font-black text-blue-700 uppercase tracking-tighter">Marsiajar</span>
             </div>
-            
             <div class="hidden md:flex gap-10 font-bold text-sm text-slate-600">
-                <a href="#beranda" class="hover:text-blue-600 transition-colors">Beranda</a>
-                <a href="#kategori" class="hover:text-blue-600 transition-colors">E-Book</a>
-                <a href="#testimoni" class="hover:text-blue-600 transition-colors">Testimoni</a>
+                <a href="#beranda" class="hover:text-blue-600">Beranda</a>
+                <a href="#kategori" class="hover:text-blue-600">Katalog Modul</a>
+                <a href="#testimoni" class="hover:text-blue-600">Testimoni</a>
             </div>
-
-            <div class="flex gap-4">
-                <button onclick="bukaAuth()" class="hidden sm:block text-sm font-bold text-blue-600 px-4 hover:bg-blue-50 rounded-xl transition-all">Masuk</button>
-                <button onclick="bukaAuth()" class="bg-blue-600 text-white text-sm font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-blue-200 hover:bg-blue-700 hover:shadow-blue-300 transition-all active:scale-95">Daftar</button>
-            </div>
+            <button onclick="bukaAuth()" class="bg-blue-600 text-white text-sm font-bold px-6 py-2.5 rounded-xl shadow-lg hover:bg-blue-700 transition-all">Masuk Siswa</button>
         </div>
     </nav>
 
     <header id="beranda" class="hero-gradient py-28 px-4 text-center relative overflow-hidden">
-        <div class="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-10 right-10 w-40 h-40 bg-indigo-400/20 rounded-full blur-3xl"></div>
-
-        <div class="max-w-4xl mx-auto relative z-10 fade-in-up">
-            <span class="inline-block py-1.5 px-4 rounded-full bg-white/20 text-white text-xs font-bold mb-6 tracking-widest uppercase backdrop-blur-md border border-white/30">🚀 Update SNBT & CPNS 2026</span>
+        <div class="max-w-4xl mx-auto relative z-10">
+            <span class="inline-block py-1.5 px-4 rounded-full bg-white/20 text-white text-xs font-bold mb-6 tracking-widest uppercase backdrop-blur-md border border-white/30">🎯 Target Lolos PTN 2026</span>
             <h1 class="text-4xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
-                Lolos Kampus Impian dengan <br>
-                <span class="text-orange-400 italic underline decoration-wavy decoration-white/30">Latihan Tepat</span>
+                Kuasai <span class="text-orange-400">UTBK & Matematika</span> <br>dengan Cara Cepat!
             </h1>
-            <p class="text-blue-100 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
-                Satu-satunya platform modul digital yang disusun oleh praktisi berpengalaman berdasarkan kisi-kisi paling akurat.
+            <p class="text-blue-100 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-medium">
+                Dapatkan koleksi e-book eksklusif, bank soal HOTS, dan trik maretong (matematika maretong) untuk tembus kampus impianmu.
             </p>
-            <div class="flex justify-center gap-4">
-                <a href="#kategori" class="bg-white text-blue-700 px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:bg-orange-400 hover:text-white transition-all transform hover:scale-105">Mulai Belajar Sekarang</a>
-            </div>
+            <a href="#kategori" class="bg-white text-blue-700 px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl hover:bg-orange-400 hover:text-white transition-all transform hover:scale-105 inline-block">Cek Katalog Modul</a>
         </div>
     </header>
 
-    <section class="max-w-7xl mx-auto px-4 -mt-12 relative z-20">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex items-center gap-5">
-                <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-2xl shrink-0"><i class="fas fa-file-invoice"></i></div>
-                <div><h4 class="font-bold text-slate-800">500+ Modul</h4><p class="text-sm text-slate-500">Materi paling lengkap</p></div>
-            </div>
-            <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex items-center gap-5">
-                <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-2xl shrink-0"><i class="fas fa-bolt"></i></div>
-                <div><h4 class="font-bold text-slate-800">Akses Instan</h4><p class="text-sm text-slate-500">Bayar langsung download</p></div>
-            </div>
-            <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex items-center gap-5">
-                <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-600 text-2xl shrink-0"><i class="fas fa-user-check"></i></div>
-                <div><h4 class="font-bold text-slate-800">Terpercaya</h4><p class="text-sm text-slate-500">15.000+ Alumni Sukses</p></div>
-            </div>
-        </div>
-    </section>
-
     <main id="kategori" class="max-w-7xl mx-auto px-4 py-24">
         <div class="text-center mb-16">
-            <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Katalog Modul Unggulan</h2>
-            <p class="text-slate-500 text-lg">Investasi terbaik untuk masa depan pendidikanmu</p>
+            <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Modul Spesialis Kami</h2>
+            <p class="text-slate-500">Pilih senjata terbaikmu untuk bertempur di ujian nanti.</p>
             <div class="w-24 h-1.5 bg-blue-600 mx-auto mt-4 rounded-full"></div>
         </div>
         
-        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div id="loading-state" class="col-span-full text-center py-20">
-                <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-600 mb-4"></div>
-                <p class="text-slate-500 font-bold animate-pulse">Menghubungkan ke Pusat Data...</p>
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="col-span-full text-center py-20">
+                <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600 mx-auto mb-4"></div>
+                <p class="text-slate-500 font-bold">Mengambil data modul...</p>
             </div>
         </div>
     </main>
 
-    <div id="payment-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[1000] flex items-center justify-center p-4 transition-all duration-500">
+    <div id="payment-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[1000] flex items-center justify-center p-4">
         <div class="bg-white rounded-[2rem] max-w-md w-full overflow-hidden shadow-2xl transform transition-all duration-300">
-            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 text-white relative">
-                <button onclick="tutupModal()" class="absolute top-4 right-4 text-white/70 hover:text-white text-2xl">&times;</button>
-                <h2 id="modal-item-name" class="text-2xl font-bold mb-1"></h2>
-                <p class="text-blue-100 text-sm">Konfirmasi pembelian paket belajar</p>
+            <div class="bg-blue-600 p-8 text-white">
+                <div class="flex justify-between items-start">
+                    <h2 id="modal-item-name" class="text-2xl font-bold leading-tight"></h2>
+                    <button onclick="tutupModal()" class="text-white/70 hover:text-white text-2xl">&times;</button>
+                </div>
+                <p class="text-blue-100 text-sm mt-2">Isi data untuk menerima link modul</p>
             </div>
             
             <div class="p-8">
-                <div class="flex justify-between items-center mb-8 bg-slate-50 p-4 rounded-2xl">
-                    <span class="text-slate-500 font-bold uppercase text-xs tracking-widest">Total Bayar:</span>
-                    <span id="modal-item-price" class="text-2xl font-black text-blue-600"></span>
-                </div>
-
-                <div class="space-y-4">
+                <div class="mb-6 space-y-4">
                     <div>
-                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">Email Pengiriman (Wajib)</label>
-                        <input type="email" id="buyer-email" placeholder="nama@email.com" 
-                               class="w-full border-2 border-slate-100 p-4 rounded-2xl focus:border-blue-500 outline-none transition-all focus:bg-white bg-slate-50">
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Email Aktif</label>
+                        <input type="email" id="buyer-email" placeholder="email@contoh.com" 
+                               class="w-full border-2 border-slate-100 p-4 rounded-2xl focus:border-blue-500 outline-none bg-slate-50">
                     </div>
-                    
-                    <button onclick="prosesBayar()" class="w-full bg-orange-500 text-white font-bold py-5 rounded-2xl shadow-xl shadow-orange-200 hover:bg-orange-600 transition-all active:scale-95 text-lg">
-                        Bayar Sekarang <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                    <p class="text-center text-[11px] text-slate-400 italic leading-relaxed">
-                        Link akses file PDF akan dikirim otomatis ke email Anda <br>setelah pembayaran berhasil divalidasi.
-                    </p>
+                    <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100 flex justify-between items-center">
+                        <span class="text-slate-500 font-bold text-xs uppercase">Harga:</span>
+                        <span id="modal-item-price" class="text-2xl font-black text-blue-600"></span>
+                    </div>
                 </div>
+                
+                <button onclick="prosesSimpanDanWA()" class="w-full bg-green-500 text-white font-bold py-5 rounded-2xl shadow-xl shadow-green-200 hover:bg-green-600 transition-all flex items-center justify-center gap-2 text-lg">
+                    <i class="fab fa-whatsapp"></i> Konfirmasi & Bayar
+                </button>
+                <p class="text-center text-[10px] text-slate-400 mt-4 italic">Email Anda akan terekam di sistem admin kami untuk pengiriman modul.</p>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[2000] bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl transform translate-y-32 transition-transform duration-500 flex items-center gap-3">
-        <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-check"></i></div>
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[2000] bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl transform translate-y-32 transition-transform duration-500">
         <span id="toast-msg" class="font-bold"></span>
     </div>
 
-    <footer class="bg-slate-950 text-slate-400 py-20 px-4">
-        <div class="max-w-7xl mx-auto text-center">
-            <div class="flex justify-center items-center gap-3 mb-8">
-                <img src="LOGO.jpg" alt="Logo" class="h-10 w-auto opacity-80">
-                <span class="text-white text-2xl font-black tracking-tighter uppercase">Marsiajar</span>
-            </div>
-            <p class="max-w-lg mx-auto mb-10 text-sm leading-relaxed">
-                Membantu ribuan siswa Indonesia meraih mimpi masuk Perguruan Tinggi Negeri dan seleksi CPNS melalui materi yang terkurasi secara profesional.
-            </p>
-            <div class="flex justify-center gap-6 mb-12">
-                <a href="#" class="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all"><i class="fab fa-instagram text-xl"></i></a>
-                <a href="#" class="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all"><i class="fab fa-whatsapp text-xl"></i></a>
-                <a href="#" class="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all"><i class="fab fa-tiktok text-xl"></i></a>
-            </div>
-            <div class="pt-10 border-t border-slate-900 text-xs">
-                <p>&copy; 2026 Marsiajar Maretong. Dibuat dengan ❤️ untuk Pendidikan Indonesia.</p>
-            </div>
-        </div>
+    <footer class="bg-slate-950 text-slate-400 py-16 px-4 text-center">
+        <p class="text-sm">&copy; 2026 Marsiajar Maretong. Fokus UTBK & Matematika.</p>
     </footer>
 
     <script>
-        let mySupabase;
+        const supabaseUrl = 'https://qyibrftzgezfatvbcqem.supabase.co';
+        const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
+        const client = supabase.createClient(supabaseUrl, supabaseKey);
 
-        function initApp() {
-            const supabaseUrl = 'https://qyibrftzgezfatvbcqem.supabase.co';
-            const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
-            
-            try {
-                mySupabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-                getProducts();
-            } catch (e) {
-                console.error(e);
-            }
-        }
+        let selectedProduct = null;
+        let selectedPrice = 0;
 
-        async function getProducts() {
+        async function fetchProducts() {
             const grid = document.getElementById('product-grid');
-            try {
-                const { data, error } = await mySupabase.from('products').select('*').order('id', { ascending: false });
-                if (error) throw error;
-
-                if (!data || data.length === 0) {
-                    grid.innerHTML = '<p class="col-span-full text-center py-20 text-slate-400 font-bold border-2 border-dashed rounded-3xl">Belum ada modul yang tersedia.</p>';
-                    return;
-                }
-
-                grid.innerHTML = data.map(item => {
-                    const jdl = item.judul || item.title || 'Produk';
-                    const hrg = item.harga || item.price || 0;
-                    const kat = item.kategori || item.category || 'Modul';
-                    const icon = item.icon || 'fa-book';
-                    const color = item.warna || 'text-blue-500';
-                    const bg = item.bg || 'bg-blue-50';
-                    const label = item.tag || '';
-
-                    return `
-                        <div class="product-card bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 flex flex-col relative overflow-hidden">
-                            ${label ? `<span class="absolute top-5 right-5 bg-orange-100 text-orange-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">${label}</span>` : ''}
-                            
-                            <div class="w-16 h-16 ${bg} rounded-2xl flex items-center justify-center mb-8">
-                                <i class="fas ${icon} ${color} text-3xl"></i>
-                            </div>
-                            
-                            <div class="flex-1">
-                                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">${kat}</span>
-                                <h3 class="text-2xl font-bold text-slate-800 mt-2 leading-tight">${jdl}</h3>
-                            </div>
-                            
-                            <div class="mt-10 pt-8 border-t border-slate-50 flex items-end justify-between">
-                                <div>
-                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Investasi</p>
-                                    <p class="text-2xl font-black text-blue-600 leading-none">Rp ${hrg.toLocaleString('id-ID')}</p>
-                                </div>
-                                <button onclick="bukaPesan('${jdl}', ${hrg})" class="bg-slate-900 text-white w-12 h-12 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-all shadow-lg hover:rotate-12">
-                                    <i class="fas fa-shopping-bag"></i>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-            } catch (err) {
-                grid.innerHTML = `<p class="col-span-full text-center text-red-500">Error Database: ${err.message}</p>`;
+            const { data, error } = await client.from('products').select('*').order('id', { ascending: false });
+            
+            if (error) {
+                grid.innerHTML = '<p class="col-span-full text-center text-red-500">Gagal memuat data.</p>';
+                return;
             }
+
+            grid.innerHTML = data.map(item => {
+                const jdl = item.judul || item.title;
+                const hrg = item.harga || item.price;
+                const asli = item.asli || 0;
+                
+                return `
+                    <div class="product-card bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100 flex flex-col relative overflow-hidden">
+                        ${item.tag ? `<span class="absolute top-5 right-5 bg-red-100 text-red-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">${item.tag}</span>` : ''}
+                        
+                        <div class="w-16 h-16 ${item.bg || 'bg-blue-50'} rounded-2xl flex items-center justify-center mb-8">
+                            <i class="fas ${item.icon || 'fa-book'} ${item.warna || 'text-blue-600'} text-3xl"></i>
+                        </div>
+                        
+                        <div class="flex-1">
+                            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">${item.kategori || 'MODUL'}</span>
+                            <h3 class="text-2xl font-bold text-slate-800 mt-2 leading-tight">${jdl}</h3>
+                        </div>
+                        
+                        <div class="mt-10 pt-8 border-t border-slate-50 flex items-end justify-between">
+                            <div>
+                                ${asli > hrg ? `<p class="text-xs text-slate-400 line-through">Rp ${asli.toLocaleString()}</p>` : ''}
+                                <p class="text-2xl font-black text-blue-600 leading-none">Rp ${hrg.toLocaleString()}</p>
+                            </div>
+                            <button onclick="bukaPesan('${jdl}', ${hrg})" class="bg-slate-900 text-white w-12 h-12 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-all shadow-lg">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         function bukaPesan(nama, harga) {
+            selectedProduct = nama;
+            selectedPrice = harga;
             document.getElementById('modal-item-name').innerText = nama;
             document.getElementById('modal-item-price').innerText = "Rp " + harga.toLocaleString('id-ID');
             document.getElementById('payment-modal').classList.remove('hidden');
@@ -272,25 +167,32 @@
             document.body.classList.remove('modal-active');
         }
 
-        function prosesBayar() {
+        async function prosesSimpanDanWA() {
             const email = document.getElementById('buyer-email').value;
-            if(!email.includes('@')) return alert("Mohon masukkan email yang valid!");
-            tutupModal();
-            showToast("Sukses! Instruksi terkirim ke " + email);
-        }
+            if(!email.includes('@')) return alert("Masukkan email yang valid!");
 
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
-            t.classList.remove('translate-y-32');
-            setTimeout(() => t.classList.add('translate-y-32'), 5000);
+            // 1. Simpan ke Log Database (Admin bisa lihat nanti)
+            const { error } = await client.from('log_pembeli').insert([{
+                email: email,
+                produk_diminati: selectedProduct
+            }]);
+
+            if(error) console.error("Gagal log:", error);
+
+            // 2. Arahkan ke WhatsApp
+            const noWA = "628xxxxxxxxxx"; // GANTI DENGAN NOMOR WA KAMU
+            const pesan = `Halo Admin Marsiajar, saya ingin memesan modul:\n\n*${selectedProduct}*\nHarga: *Rp ${selectedPrice.toLocaleString()}*\nEmail saya: *${email}*\n\nMohon instruksi pembayarannya.`;
+            const linkWA = `https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`;
+            
+            window.open(linkWA, '_blank');
+            tutupModal();
         }
 
         function bukaAuth() {
-            alert("Fitur Login sedang dipersiapkan. Untuk saat ini Anda bisa langsung membeli modul di bawah.");
+            alert("Sistem Login dalam pengembangan. Silakan langsung pilih modul di katalog.");
         }
 
-        window.onload = initApp;
+        window.onload = fetchProducts;
     </script>
 </body>
 </html>
