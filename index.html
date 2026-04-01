@@ -13,17 +13,9 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .modal-active { overflow: hidden; }
-        #payment-modal, #auth-modal, #ai-modal { transition: all 0.3s ease; }
+        #payment-modal, #auth-modal { transition: all 0.3s ease; }
         html { scroll-behavior: smooth; }
         .glass-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
-        @keyframes pulse-ai {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-        }
-        .ai-float-btn { animation: pulse-ai 2s infinite; }
     </style>
 </head>
 <body class="bg-gray-50 text-slate-900">
@@ -32,7 +24,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center gap-3">
-                    <img src="LOGO.jpg" alt="Logo Marsiajar" class="h-14 w-auto">
+                    <img src="LOGO.jpg" alt="Logo" class="h-14 w-auto object-contain">
                     <span class="text-xl font-extrabold text-blue-700 uppercase">Marsiajar</span>
                 </div>
                 <div class="hidden md:flex space-x-8 items-center">
@@ -49,7 +41,7 @@
     </nav>
 
     <header id="beranda" class="bg-blue-600 py-20 px-4 text-center">
-        <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6">Kuasai Ujianmu dengan <span class="text-orange-400">Latihan Tepat</span></h1>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 italic">Kuasai Ujianmu dengan <span class="text-orange-400">Latihan Tepat</span></h1>
         <p class="text-blue-100 text-lg max-w-2xl mx-auto mb-10">Koleksi soal premium berdasarkan kisi-kisi terbaru dan paling akurat.</p>
     </header>
 
@@ -59,22 +51,41 @@
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="col-span-full text-center py-20">
                 <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
-                <p class="mt-4 text-slate-500">Memuat modul...</p>
+                <p class="mt-4 text-slate-500 font-medium">Memuat modul dari database...</p>
             </div>
-        </div>
-
-        <div id="empty-state" class="hidden flex flex-col items-center py-16">
-            <p class="text-gray-500">Modul tidak ditemukan.</p>
         </div>
     </main>
 
     <div id="payment-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl scale-95 opacity-0 transition-all duration-300" id="payment-content">
             <h2 id="modal-item-name" class="text-2xl font-bold mb-2"></h2>
             <p id="modal-item-price" class="text-blue-600 font-black text-xl mb-6"></p>
-            <input type="email" id="buyer-email" placeholder="Masukkan Email Anda" class="w-full border p-3 rounded-xl mb-4 outline-none focus:border-blue-500">
+            <input type="email" id="buyer-email" placeholder="Masukkan Email Anda" class="w-full border p-4 rounded-xl mb-4 outline-none focus:ring-2 focus:ring-blue-500">
             <button onclick="prosesBayar()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl">Konfirmasi Pembelian</button>
             <button onclick="tutupModal()" class="w-full text-slate-400 mt-4">Batal</button>
+        </div>
+    </div>
+
+    <div id="auth-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl scale-95 opacity-0 transition-all duration-300" id="auth-content">
+            <div id="login-form">
+                <h2 class="text-2xl font-bold mb-2">Masuk ke Akun</h2>
+                <p class="text-slate-500 text-sm mb-6">Akses materi belajar Anda kembali.</p>
+                <input type="email" placeholder="Email" class="w-full border p-4 rounded-xl mb-4 outline-none">
+                <input type="password" placeholder="Password" class="w-full border p-4 rounded-xl mb-4 outline-none">
+                <button onclick="dummyAuth('Masuk')" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl">Masuk</button>
+                <p class="text-center text-sm mt-4">Belum punya akun? <button onclick="toggleAuthMode('register')" class="text-blue-600 font-bold">Daftar</button></p>
+            </div>
+            <div id="register-form" class="hidden">
+                <h2 class="text-2xl font-bold mb-2">Daftar Akun</h2>
+                <p class="text-slate-500 text-sm mb-6">Mulai perjalanan suksesmu hari ini.</p>
+                <input type="text" placeholder="Nama Lengkap" class="w-full border p-4 rounded-xl mb-4 outline-none">
+                <input type="email" placeholder="Email" class="w-full border p-4 rounded-xl mb-4 outline-none">
+                <input type="password" placeholder="Password" class="w-full border p-4 rounded-xl mb-4 outline-none">
+                <button onclick="dummyAuth('Daftar')" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl">Daftar Sekarang</button>
+                <p class="text-center text-sm mt-4">Sudah punya akun? <button onclick="toggleAuthMode('login')" class="text-blue-600 font-bold">Masuk</button></p>
+            </div>
+            <button onclick="tutupAuth()" class="w-full text-slate-400 mt-4">Tutup</button>
         </div>
     </div>
 
@@ -88,30 +99,28 @@
         const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-        // 2. FUNGSI AMBIL DATA PRODUK
+        // 2. AMBIL DATA PRODUK
         async function fetchProducts() {
             const productGrid = document.getElementById('product-grid');
-            
             try {
-                const { data, error } = await supabase
-                    .from('products')
-                    .select('*')
-                    .order('id', { ascending: false });
+                // Ambil data dan urutkan dari ID terbaru
+                const { data, error } = await supabase.from('products').select('*').order('id', { ascending: false });
                 
                 if (error) throw error;
 
                 if (!data || data.length === 0) {
-                    productGrid.innerHTML = '<p class="col-span-full text-center text-slate-500 py-10">Belum ada modul tersedia saat ini.</p>';
+                    productGrid.innerHTML = '<p class="col-span-full text-center text-slate-500">Belum ada modul tersedia.</p>';
                     return;
                 }
 
                 productGrid.innerHTML = data.map(item => {
-                    const judul = item.title || item.judul || 'Tanpa Judul';
-                    const harga = item.price || item.harga || 0;
-                    const kategori = item.category || item.kategori || 'Umum';
-                    const ikon = item.icon || 'fa-book';
-                    const warnaTeks = item.warna || 'text-blue-500';
+                    // Fallback kolom (support judul/title, harga/price)
+                    const judul = item.judul || item.title || 'Modul';
+                    const harga = item.harga || item.price || 0;
+                    const kategori = item.kategori || item.category || 'Digital';
                     const warnaBg = item.bg || 'bg-blue-50';
+                    const warnaTeks = item.warna || 'text-blue-600';
+                    const ikon = item.icon || 'fa-book';
 
                     return `
                         <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 group">
@@ -124,7 +133,7 @@
                             </div>
                             <div class="flex items-center justify-between mt-8 pt-6 border-t border-slate-50">
                                 <div>
-                                    <p class="text-xs text-slate-400 font-medium">Investasi</p>
+                                    <p class="text-[10px] text-slate-400 font-bold uppercase">Investasi</p>
                                     <p class="text-lg font-black text-blue-600">Rp ${harga.toLocaleString('id-ID')}</p>
                                 </div>
                                 <button onclick="bukaModalPilih('${judul}', ${harga})" class="bg-slate-900 text-white px-5 py-3 rounded-2xl font-bold text-sm hover:bg-blue-600 transition-colors shadow-lg">
@@ -134,31 +143,65 @@
                         </div>
                     `;
                 }).join('');
-
             } catch (err) {
-                console.error("Gagal memuat:", err);
-                productGrid.innerHTML = `<p class="col-span-full text-center text-red-500">Gagal memuat data dari database.</p>`;
+                console.error(err);
+                productGrid.innerHTML = '<p class="col-span-full text-center text-red-500 font-bold">Koneksi Database Gagal!</p>';
             }
         }
 
-        // 3. FUNGSI MODAL & PEMBAYARAN
+        // 3. FUNGSI MODAL
         function bukaModalPilih(judul, harga) {
             document.getElementById('modal-item-name').innerText = judul;
             document.getElementById('modal-item-price').innerText = "Rp " + harga.toLocaleString('id-ID');
-            document.getElementById('payment-modal').classList.remove('hidden');
+            const modal = document.getElementById('payment-modal');
+            const content = document.getElementById('payment-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
             document.body.classList.add('modal-active');
         }
 
         function tutupModal() {
-            document.getElementById('payment-modal').classList.add('hidden');
-            document.body.classList.remove('modal-active');
+            const content = document.getElementById('payment-content');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                document.getElementById('payment-modal').classList.add('hidden');
+                document.body.classList.remove('modal-active');
+            }, 300);
         }
 
         function prosesBayar() {
             const email = document.getElementById('buyer-email').value;
-            if(!email.includes('@')) return alert("Masukkan email yang benar!");
+            if(!email.includes('@')) return alert("Masukkan email valid!");
             tutupModal();
             showToast("✅ Instruksi pembayaran dikirim ke " + email);
+        }
+
+        function bukaAuth(mode) {
+            toggleAuthMode(mode);
+            const modal = document.getElementById('auth-modal');
+            const content = document.getElementById('auth-content');
+            modal.classList.remove('hidden');
+            setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
+            document.body.classList.add('modal-active');
+        }
+
+        function tutupAuth() {
+            const content = document.getElementById('auth-content');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                document.getElementById('auth-modal').classList.add('hidden');
+                document.body.classList.remove('modal-active');
+            }, 300);
+        }
+
+        function toggleAuthMode(mode) {
+            document.getElementById('login-form').classList.toggle('hidden', mode !== 'login');
+            document.getElementById('register-form').classList.toggle('hidden', mode !== 'register');
+        }
+
+        function dummyAuth(teks) {
+            showToast(`✅ Berhasil ${teks}!`);
+            tutupAuth();
         }
 
         function showToast(msg) {
@@ -168,7 +211,6 @@
             setTimeout(() => t.classList.add('translate-y-32'), 4000);
         }
 
-        // 4. JALANKAN SAAT START
         document.addEventListener('DOMContentLoaded', fetchProducts);
     </script>
 </body>
