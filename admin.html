@@ -132,32 +132,128 @@
     </div>
 
     <script>
-        let supabase;
-        const tbody = document.getElementById('tabel-body');
+    // 1. Deklarasikan variabelnya SEKALI SAJA di paling atas
+    let supabaseClient; 
+    const tbody = document.getElementById('tabel-body');
 
-        // ==========================================
-        // 1. INISIALISASI DATABASE ANTI-CRASH
-        // ==========================================
-        function initDatabase() {
-            try {
-                const supabaseUrl = 'https://qyibrftzgezfatvbcqem.supabase.co';
-                const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
-                
-                if (!window.supabase) {
-                    throw new Error("Library Supabase gagal dimuat dari CDN. Cek koneksi internet Anda.");
-                }
-                
-                supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-                console.log("Supabase berhasil diinisialisasi!");
-                loadData(); // Langsung load data jika sukses
-            } catch (error) {
-                console.error(error);
-                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-red-500 font-bold bg-red-50">
-                    <i class="fas fa-exclamation-triangle text-2xl mb-2"></i><br>Sistem Gagal Terhubung ke Database!<br><span class="text-xs font-normal mt-2 block">${error.message}</span>
-                </td></tr>`;
-                showToast("❌ Gagal inisialisasi Database.");
+    // 2. Fungsi Inisialisasi
+    function initDatabase() {
+        try {
+            const supabaseUrl = 'https://qyibrftzgezfatvbcqem.supabase.co';
+            const supabaseKey = 'sb_publishable_i27V8ZT7Gv008BjCvIckxQ_cMN75n2b';
+            
+            if (!window.supabase) {
+                throw new Error("Library Supabase gagal dimuat.");
             }
+            
+            // GUNAKAN variabel yang sudah dideklarasikan tadi (tanpa let/const lagi)
+            supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+            console.log("Koneksi Berhasil!");
+            loadData();
+        } catch (error) {
+            console.error(error);
+            tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-red-500 font-bold bg-red-50">Gagal Terhubung: ${error.message}</td></tr>`;
         }
+    }
+
+    // 3. Ambil Data (Gunakan supabaseClient)
+    async function loadData() {
+        if (!supabaseClient) return;
+        tbody.innerHTML = '<tr><td colspan="4" class="p-10 text-center text-blue-500"><i class="fas fa-spinner fa-spin text-3xl mb-3"></i><br>Menghubungkan...</td></tr>';
+        
+        try {
+            const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: false });
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-400">Belum ada modul.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = data.map(item => `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="p-4 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg ${item.bg || 'bg-slate-100'} flex items-center justify-center shrink-0">
+                            <i class="fas ${item.icon || 'fa-book'} ${item.warna || 'text-slate-500'}"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-800">${item.title || item.judul}</p>
+                        </div>
+                    </td>
+                    <td class="p-4 text-slate-600 uppercase text-xs font-bold">${item.category || item.kategori}</td>
+                    <td class="p-4 font-black text-blue-600">Rp ${(item.price || item.harga || 0).toLocaleString('id-ID')}</td>
+                    <td class="p-4 text-center">
+                        <button onclick="hapusProduk('${item.id}', '${item.title || item.judul}')" class="text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        } catch (err) {
+            tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-red-500 font-bold">Error: ${err.message}</td></tr>`;
+        }
+    }
+
+    // 4. Tambah Produk (Gunakan supabaseClient)
+    async function tambahProduk() {
+        if (!supabaseClient) return;
+        const btn = document.getElementById('btn-submit');
+        btn.innerHTML = 'Menyimpan...';
+        btn.disabled = true;
+
+        try {
+            const temaDipilih = document.querySelector('input[name="tema"]:checked').value;
+            const mappingWarna = {
+                blue: { warna: 'text-blue-500', bg: 'bg-blue-50' },
+                red: { warna: 'text-red-500', bg: 'bg-red-50' },
+                emerald: { warna: 'text-emerald-500', bg: 'bg-emerald-50' },
+                purple: { warna: 'text-purple-500', bg: 'bg-purple-50' },
+                orange: { warna: 'text-orange-500', bg: 'bg-orange-50' }
+            };
+
+            const dataBaru = {
+                title: document.getElementById('input-judul').value,
+                judul: document.getElementById('input-judul').value, // Duplikasi untuk compatibility
+                category: document.getElementById('input-kategori').value,
+                kategori: document.getElementById('input-kategori').value, // Duplikasi
+                price: parseInt(document.getElementById('input-harga').value),
+                harga: parseInt(document.getElementById('input-harga').value), // Duplikasi
+                tag: document.getElementById('input-tag').value,
+                icon: document.getElementById('input-icon').value || 'fa-book',
+                warna: mappingWarna[temaDipilih].warna,
+                bg: mappingWarna[temaDipilih].bg
+            };
+
+            const { error } = await supabaseClient.from('products').insert([dataBaru]);
+            if (error) throw error;
+
+            alert("✅ Berhasil disimpan!");
+            document.getElementById('form-tambah').reset();
+            loadData();
+        } catch (err) {
+            alert("Gagal: " + err.message);
+        } finally {
+            btn.innerHTML = '<i class="fas fa-save mr-2"></i> Simpan ke Database';
+            btn.disabled = false;
+        }
+    }
+
+    async function hapusProduk(id, nama) {
+        if(confirm(`Hapus ${nama}?`)) {
+            const { error } = await supabaseClient.from('products').delete().eq('id', id);
+            if(!error) loadData();
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('form-tambah');
+        if (form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                tambahProduk();
+            });
+        }
+        initDatabase();
+    });
+</script>
 
         // ==========================================
         // 2. MENGAMBIL DATA (READ)
