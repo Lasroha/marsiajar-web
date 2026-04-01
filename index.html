@@ -179,18 +179,26 @@
         }
 
         async function prosesLogin() {
-            const user = document.getElementById('login-user').value;
-            const pass = document.getElementById('login-pass').value;
+    const user = document.getElementById('login-user').value;
+    const pass = document.getElementById('login-pass').value;
 
-            const { data, error } = await client.from('users_siswa').select('*').or(`username.eq.${user},email.eq.${user}`).eq('password', pass).single();
+    const { data, error } = await client
+        .from('users_siswa')
+        .select('*')
+        .or(`username.eq.${user},email.eq.${user}`)
+        .eq('password', pass)
+        .single();
 
-            if (data) {
-                alert("Selamat datang, " + data.nama + "! Anda akan diarahkan ke dashboard.");
-                // Nanti arahkan ke dashboard.html jika sudah dibuat
-            } else {
-                alert("Username atau Password salah!");
-            }
-        }
+    if (data) {
+        // MENYIMPAN DATA KE LOCALSTORAGE (MEMORI BROWSER)
+        localStorage.setItem('user_marsiajar', JSON.stringify(data));
+        
+        alert("Selamat datang, " + data.nama + "!");
+        window.location.href = 'dashboard.html'; // Pindah ke halaman dashboard
+    } else {
+        alert("Username atau Password salah!");
+    }
+}
 
         // FUNGSI PEMBELIAN
         function bukaPesan(nama, harga) {
